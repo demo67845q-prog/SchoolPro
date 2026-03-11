@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Student Document (define FIRST so stat button can reference it) ── -->
+    <record id="action_school_student_document" model="ir.actions.act_window">
+        <field name="name">Student Documents</field>
+        <field name="res_model">school.student.document</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Student List ──────────────────────────────────────────────────── -->
+    <record id="view_school_student_list" model="ir.ui.view">
+        <field name="name">school.student.list</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <list string="Students" decoration-danger="state == 'suspended'" decoration-muted="state == 'alumni'">
+                <field name="admission_no"/>
+                <field name="name"/>
+                <field name="class_id"/>
+                <field name="section_id"/>
+                <field name="gender"/>
+                <field name="father_name"/>
+                <field name="father_phone"/>
+                <field name="attendance_percent" string="Att. %"/>
+                <field name="fee_due" string="Due Amount"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'active'"
+                    decoration-warning="state == 'suspended'"
+                    decoration-muted="state in ('draft','alumni','transferred')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Student Form ──────────────────────────────────────────────────── -->
+    <record id="view_school_student_form" model="ir.ui.view">
+        <field name="name">school.student.form</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <form string="Student">
+                <header>
+                    <button name="action_activate" string="Activate" type="object"
+                        class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_suspend" string="Suspend" type="object"
+                        class="btn-warning" invisible="state != 'active'"/>
+                    <button name="action_transfer" string="Transfer" type="object"
+                        class="btn-info" invisible="state not in ('active','suspended')"/>
+                    <button name="action_alumni" string="Mark Alumni" type="object"
+                        invisible="state not in ('active','transferred')"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                        invisible="state not in ('suspended','transferred')"/>
+                    <button name="action_promote" string="Promote" type="object"
+                        class="btn-success" invisible="state != 'active'"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,active,alumni"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_school_student_document)d" type="action"
+                            class="oe_stat_button" icon="fa-file"
+                            context="{'default_student_id': id}">
+                            <field name="document_count" widget="statinfo" string="Docs"/>
+                        </button>
+                    </div>
+                    <field name="photo" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Student Full Name"/></h1>
+                        <div class="o_row">
+                            <field name="admission_no" readonly="1"/>
+                            <span> | </span>
+                            <field name="student_id" readonly="1"/>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Academic Info">
+                            <group>
+                                <group string="Academic Details">
+                                    <field name="academic_year_id"/>
+                                    <field name="class_id"/>
+                                    <field name="section_id"/>
+                                    <field name="roll_number"/>
+                                    <field name="admission_date"/>
+                                </group>
+                                <group string="Personal Details">
+                                    <field name="date_of_birth"/>
+                                    <field name="age" readonly="1"/>
+                                    <field name="gender"/>
+                                    <field name="blood_group"/>
+                                    <field name="nationality"/>
+                                    <field name="religion"/>
+                                    <field name="mother_tongue"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Contact">
+                            <group>
+                                <group>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                    <field name="address"/>
+                                    <field name="city"/>
+                                </group>
+                                <group>
+                                    <field name="state_id"/>
+                                    <field name="country_id"/>
+                                    <field name="pincode"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Parents / Guardian">
+                            <group string="Father">
+                                <field name="father_name"/>
+                                <field name="father_occupation"/>
+                                <field name="father_phone"/>
+                                <field name="father_email"/>
+                            </group>
+                            <group string="Mother">
+                                <field name="mother_name"/>
+                                <field name="mother_occupation"/>
+                                <field name="mother_phone"/>
+                            </group>
+                            <group string="Guardian (if different)">
+                                <field name="guardian_name"/>
+                                <field name="guardian_relation"/>
+                                <field name="guardian_phone"/>
+                                <field name="parent_user_id"/>
+                            </group>
+                        </page>
+                        <page string="Medical">
+                            <group>
+                                <group>
+                                    <field name="medical_conditions"/>
+                                    <field name="emergency_contact"/>
+                                    <field name="emergency_phone"/>
+                                </group>
+                                <group>
+                                    <field name="doctor_name"/>
+                                    <field name="doctor_phone"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Previous School">
+                            <group>
+                                <field name="previous_school"/>
+                                <field name="previous_class"/>
+                                <field name="transfer_certificate"/>
+                                <field name="reason_for_leaving"/>
+                            </group>
+                        </page>
+                        <page string="Documents">
+                            <field name="document_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="doc_type"/>
+                                    <field name="date_uploaded"/>
+                                    <field name="file_name"/>
+                                    <field name="file" widget="binary" filename="file_name"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Attendance">
+                            <group>
+                                <field name="attendance_percent" string="Attendance %" readonly="1"/>
+                            </group>
+                            <field name="attendance_ids" readonly="1">
+                                <list>
+                                    <field name="date"/>
+                                    <field name="status" widget="badge"
+                                        decoration-success="status == 'present'"
+                                        decoration-danger="status == 'absent'"
+                                        decoration-warning="status == 'late'"/>
+                                    <field name="reason"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Fees">
+                            <group>
+                                <field name="fee_due" readonly="1"/>
+                            </group>
+                            <field name="fee_invoice_ids" readonly="1">
+                                <list>
+                                    <field name="reference"/>
+                                    <field name="date"/>
+                                    <field name="total_amount"/>
+                                    <field name="amount_paid"/>
+                                    <field name="amount_due"/>
+                                    <field name="state" widget="badge"
+                                        decoration-success="state == 'paid'"
+                                        decoration-danger="state in ('overdue','cancelled')"
+                                        decoration-warning="state == 'partial'"
+                                        decoration-info="state == 'pending'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Portal Access">
+                            <group>
+                                <field name="user_id" string="Student Portal User"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Student Kanban ────────────────────────────────────────────────── -->
+    <record id="view_school_student_kanban" model="ir.ui.view">
+        <field name="name">school.student.kanban</field>
+        <field name="model">school.student</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="photo"/>
+                <field name="class_id"/>
+                <field name="section_id"/>
+                <field name="state"/>
+                <field name="father_phone"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex align-items-center">
+                            <field name="photo" widget="image" class="rounded-circle me-2" style="width:40px;height:40px;"/>
+                            <div>
+                                <strong><field name="name"/></strong>
+                                <div class="text-muted small">
+                                    <field name="class_id"/> - <field name="section_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-1">
+                            <field name="state" widget="badge"
+                                decoration-success="state == 'active'"
+                                decoration-warning="state == 'suspended'"
+                                decoration-muted="state in ('draft','alumni')"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ── Student Document ──────────────────────────────────────────────── -->
+    <record id="view_school_student_document_list" model="ir.ui.view">
+        <field name="name">school.student.document.list</field>
+        <field name="model">school.student.document</field>
+        <field name="arch" type="xml">
+            <list string="Student Documents">
+                <field name="student_id"/>
+                <field name="name"/>
+                <field name="doc_type"/>
+                <field name="date_uploaded"/>
+                <field name="file" widget="binary" filename="file_name"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Actions ───────────────────────────────────────────────────────── -->
+    <record id="action_school_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">school.student</field>
+        <field name="view_mode">list,kanban,form</field>
+    </record>
+
+    <record id="action_school_student_active" model="ir.actions.act_window">
+        <field name="name">Active Students</field>
+        <field name="res_model">school.student</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('state', '=', 'active')]</field>
+    </record>
+
+    <record id="action_school_student_draft" model="ir.actions.act_window">
+        <field name="name">New Admissions</field>
+        <field name="res_model">school.student</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'draft')]</field>
+    </record>
+</odoo>

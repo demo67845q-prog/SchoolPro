@@ -1,0 +1,179 @@
+/* School Management Dashboard Styles */
+
+.school-dashboard {
+    padding: 16px;
+    background: #f4f6f9;
+    min-height: 100vh;
+}
+
+/* Header */
+.school-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.school-dashboard-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #2c3e50;
+}
+
+/* KPI Section */
+.school-kpi-section {
+    margin-bottom: 24px;
+}
+
+.school-kpi-section h5 {
+    color: #7f8c8d;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.school-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+/* KPI Cards */
+.school-kpi-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border-left: 4px solid #ccc;
+    text-align: center;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.school-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.school-kpi-card .kpi-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.school-kpi-card .kpi-label {
+    font-size: 0.75rem;
+    color: #7f8c8d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* KPI Themes */
+.school-kpi-card.kpi-total    { border-color: #3498db; color: #3498db; }
+.school-kpi-card.kpi-active   { border-color: #2ecc71; color: #2ecc71; }
+.school-kpi-card.kpi-teachers { border-color: #9b59b6; color: #9b59b6; }
+.school-kpi-card.kpi-classes  { border-color: #f39c12; color: #f39c12; }
+.school-kpi-card.kpi-fee      { border-color: #e74c3c; color: #e74c3c; }
+.school-kpi-card.kpi-paid     { border-color: #1abc9c; color: #1abc9c; }
+.school-kpi-card.kpi-pending  { border-color: #e67e22; color: #e67e22; }
+.school-kpi-card.kpi-books    { border-color: #3498db; color: #3498db; }
+.school-kpi-card.kpi-overdue  { border-color: #e74c3c; color: #e74c3c; }
+.school-kpi-card.kpi-att      { border-color: #2ecc71; color: #2ecc71; }
+
+/* Charts */
+.school-charts-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.school-chart-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.school-chart-card h6 {
+    margin-bottom: 16px;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Table Card */
+.school-table-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.school-table-card h6 {
+    margin-bottom: 16px;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.school-table-card table {
+    width: 100%;
+    font-size: 0.85rem;
+}
+
+.school-table-card th {
+    background: #f8f9fa;
+    padding: 8px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.school-table-card td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Loading / Error */
+.school-loading {
+    text-align: center;
+    padding: 80px 20px;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+/* Refresh Button */
+.school-refresh-btn {
+    background: none;
+    border: 1px solid #3498db;
+    color: #3498db;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.15s;
+}
+
+.school-refresh-btn:hover {
+    background: #3498db;
+    color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .school-charts-row {
+        grid-template-columns: 1fr;
+    }
+
+    .school-kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

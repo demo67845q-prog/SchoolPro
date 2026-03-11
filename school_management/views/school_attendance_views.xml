@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Student Attendance ────────────────────────────────────────────── -->
+    <record id="view_school_attendance_list" model="ir.ui.view">
+        <field name="name">school.attendance.list</field>
+        <field name="model">school.attendance</field>
+        <field name="arch" type="xml">
+            <list string="Student Attendance"
+                decoration-danger="status == 'absent'"
+                decoration-warning="status == 'late'"
+                decoration-success="status == 'present'">
+                <field name="date"/>
+                <field name="student_id"/>
+                <field name="section_id"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'present'"
+                    decoration-danger="status == 'absent'"
+                    decoration-warning="status in ('late','half_day')"
+                    decoration-info="status == 'on_leave'"/>
+                <field name="reason"/>
+                <field name="teacher_id"/>
+                <field name="marked_by"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_attendance_form" model="ir.ui.view">
+        <field name="name">school.attendance.form</field>
+        <field name="model">school.attendance</field>
+        <field name="arch" type="xml">
+            <form string="Attendance Record">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="student_id"/>
+                            <field name="section_id"/>
+                        </group>
+                        <group>
+                            <field name="status"/>
+                            <field name="reason"/>
+                            <field name="teacher_id"/>
+                            <field name="marked_by" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Bulk Attendance Wizard ─────────────────────────────────────────── -->
+    <record id="view_school_attendance_bulk_wizard_form" model="ir.ui.view">
+        <field name="name">school.attendance.bulk.wizard.form</field>
+        <field name="model">school.attendance.bulk.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Attendance">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="class_id"/>
+                            <field name="section_id"/>
+                        </group>
+                        <group>
+                            <field name="teacher_id"/>
+                            <field name="default_status"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="roll_number" readonly="1"/>
+                            <field name="student_id" readonly="1"/>
+                            <field name="status"/>
+                            <field name="reason"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_save" string="Save Attendance" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_attendance_bulk_wizard" model="ir.actions.act_window">
+        <field name="name">Bulk Attendance</field>
+        <field name="res_model">school.attendance.bulk.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── Teacher Attendance ─────────────────────────────────────────────── -->
+    <record id="view_school_teacher_attendance_list" model="ir.ui.view">
+        <field name="name">school.teacher.attendance.list</field>
+        <field name="model">school.teacher.attendance</field>
+        <field name="arch" type="xml">
+            <list string="Teacher Attendance" editable="bottom"
+                decoration-danger="status == 'absent'">
+                <field name="date"/>
+                <field name="teacher_id"/>
+                <field name="status" widget="badge"
+                    decoration-success="status == 'present'"
+                    decoration-danger="status == 'absent'"
+                    decoration-warning="status in ('half_day','on_leave')"/>
+                <field name="reason"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_school_attendance" model="ir.actions.act_window">
+        <field name="name">Student Attendance</field>
+        <field name="res_model">school.attendance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_school_teacher_attendance" model="ir.actions.act_window">
+        <field name="name">Teacher Attendance</field>
+        <field name="res_model">school.teacher.attendance</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

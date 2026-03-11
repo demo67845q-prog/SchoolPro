@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="module_school_management" model="ir.module.category">
+            <field name="name">School Management</field>
+            <field name="description">School Management System</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- System Administrator -->
+        <record id="group_school_admin" model="res.groups">
+            <field name="name">System Administrator</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Full access to all school management features.</field>
+        </record>
+
+        <!-- School Principal -->
+        <record id="group_school_principal" model="res.groups">
+            <field name="name">School Admin / Principal</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="implied_ids" eval="[(4, ref('group_school_admin'))]"/>
+            <field name="comment">Principal can manage all academic operations.</field>
+        </record>
+
+        <!-- Teacher -->
+        <record id="group_school_teacher" model="res.groups">
+            <field name="name">Teacher</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Teachers can mark attendance, assign homework, and enter marks.</field>
+        </record>
+
+        <!-- Student -->
+        <record id="group_school_student" model="res.groups">
+            <field name="name">Student</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Students can view their own data.</field>
+        </record>
+
+        <!-- Parent -->
+        <record id="group_school_parent" model="res.groups">
+            <field name="name">Parent</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Parents can view their child's data only.</field>
+        </record>
+
+        <!-- Accountant -->
+        <record id="group_school_accountant" model="res.groups">
+            <field name="name">Accountant</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Manage fee collection, invoices, and payments.</field>
+        </record>
+
+        <!-- Librarian -->
+        <record id="group_school_librarian" model="res.groups">
+            <field name="name">Librarian</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Manage library books, issues, and returns.</field>
+        </record>
+
+        <!-- Transport Manager -->
+        <record id="group_school_transport" model="res.groups">
+            <field name="name">Transport Manager</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Manage routes, vehicles, and student transport.</field>
+        </record>
+
+        <!-- Receptionist -->
+        <record id="group_school_receptionist" model="res.groups">
+            <field name="name">Receptionist</field>
+            <field name="category_id" ref="module_school_management"/>
+            <field name="comment">Manage admissions and front desk operations.</field>
+        </record>
+    </data>
+</odoo>

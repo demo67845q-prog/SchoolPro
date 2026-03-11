@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Academic Year ─────────────────────────────────────────────────── -->
+    <record id="view_school_academic_year_list" model="ir.ui.view">
+        <field name="name">school.academic.year.list</field>
+        <field name="model">school.academic.year</field>
+        <field name="arch" type="xml">
+            <list string="Academic Years">
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_academic_year_form" model="ir.ui.view">
+        <field name="name">school.academic.year.form</field>
+        <field name="model">school.academic.year</field>
+        <field name="arch" type="xml">
+            <form string="Academic Year">
+                <header>
+                    <button name="action_set_active" string="Set as Current" type="object"
+                        class="btn-primary" invisible="is_active"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. 2024-2025"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group>
+                            <field name="is_active" string="Current Year"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_academic_year" model="ir.actions.act_window">
+        <field name="name">Academic Years</field>
+        <field name="res_model">school.academic.year</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── School Config ─────────────────────────────────────────────────── -->
+    <record id="view_school_config_form" model="ir.ui.view">
+        <field name="name">school.config.form</field>
+        <field name="model">school.config</field>
+        <field name="arch" type="xml">
+            <form string="School Configuration">
+                <sheet>
+                    <div class="row">
+                        <div class="col-4 text-center">
+                            <field name="logo" widget="image" class="img-thumbnail" style="max-height:120px;"/>
+                        </div>
+                        <div class="col-8">
+                            <div class="oe_title">
+                                <h1><field name="name" placeholder="School Name"/></h1>
+                            </div>
+                            <field name="code" placeholder="School Code"/>
+                        </div>
+                    </div>
+                    <group string="Details">
+                        <group>
+                            <field name="principal_id"/>
+                            <field name="academic_year_id"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="website"/>
+                        </group>
+                        <group>
+                            <field name="address"/>
+                            <field name="city"/>
+                            <field name="state_id"/>
+                            <field name="country_id"/>
+                        </group>
+                    </group>
+                    <group string="Sequence Prefixes">
+                        <field name="admission_prefix"/>
+                        <field name="student_id_prefix"/>
+                    </group>
+                    <group string="About">
+                        <field name="about" widget="html" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_school_config_list" model="ir.ui.view">
+        <field name="name">school.config.list</field>
+        <field name="model">school.config</field>
+        <field name="arch" type="xml">
+            <list string="School Configuration">
+                <field name="name"/>
+                <field name="principal_id"/>
+                <field name="phone"/>
+                <field name="email"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_school_config" model="ir.actions.act_window">
+        <field name="name">School Configuration</field>
+        <field name="res_model">school.config</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

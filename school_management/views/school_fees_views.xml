@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Fee Category ──────────────────────────────────────────────────── -->
+    <record id="view_school_fee_category_list" model="ir.ui.view">
+        <field name="name">school.fee.category.list</field>
+        <field name="model">school.fee.category</field>
+        <field name="arch" type="xml">
+            <list string="Fee Categories" editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_school_fee_category" model="ir.actions.act_window">
+        <field name="name">Fee Categories</field>
+        <field name="res_model">school.fee.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Fee Structure ─────────────────────────────────────────────────── -->
+    <record id="view_school_fee_structure_list" model="ir.ui.view">
+        <field name="name">school.fee.structure.list</field>
+        <field name="model">school.fee.structure</field>
+        <field name="arch" type="xml">
+            <list string="Fee Structures">
+                <field name="name"/>
+                <field name="academic_year_id"/>
+                <field name="class_id"/>
+                <field name="total_amount"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_fee_structure_form" model="ir.ui.view">
+        <field name="name">school.fee.structure.form</field>
+        <field name="model">school.fee.structure</field>
+        <field name="arch" type="xml">
+            <form string="Fee Structure">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Fee Structure Name"/></h1>
+                    </div>
+                    <group>
+                        <field name="academic_year_id"/>
+                        <field name="class_id"/>
+                        <field name="total_amount" readonly="1"/>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="category_id"/>
+                            <field name="name"/>
+                            <field name="amount"/>
+                            <field name="due_date"/>
+                            <field name="is_optional"/>
+                        </list>
+                    </field>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_fee_structure" model="ir.actions.act_window">
+        <field name="name">Fee Structures</field>
+        <field name="res_model">school.fee.structure</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Fee Invoice ───────────────────────────────────────────────────── -->
+    <record id="view_school_fee_invoice_list" model="ir.ui.view">
+        <field name="name">school.fee.invoice.list</field>
+        <field name="model">school.fee.invoice</field>
+        <field name="arch" type="xml">
+            <list string="Fee Invoices"
+                decoration-danger="state in ('overdue','cancelled')"
+                decoration-success="state == 'paid'"
+                decoration-warning="state == 'partial'">
+                <field name="reference"/>
+                <field name="student_id"/>
+                <field name="class_id"/>
+                <field name="academic_year_id"/>
+                <field name="date"/>
+                <field name="due_date"/>
+                <field name="total_amount"/>
+                <field name="amount_paid"/>
+                <field name="amount_due"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'paid'"
+                    decoration-danger="state in ('overdue','cancelled')"
+                    decoration-warning="state == 'partial'"
+                    decoration-info="state == 'pending'"
+                    decoration-muted="state == 'draft'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_fee_invoice_form" model="ir.ui.view">
+        <field name="name">school.fee.invoice.form</field>
+        <field name="model">school.fee.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Fee Invoice">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object"
+                        class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_register_payment" string="Register Payment" type="object"
+                        class="btn-success" invisible="state not in ('pending','partial','overdue')"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                        class="btn-danger" invisible="state in ('paid','cancelled')"/>
+                    <button name="action_reset_draft" string="Reset to Draft" type="object"
+                        invisible="state not in ('cancelled','pending')"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,pending,partial,paid"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="reference" string="Invoice Ref"/>
+                        <h1><field name="reference" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="student_id"/>
+                            <field name="academic_year_id"/>
+                            <field name="class_id" readonly="1"/>
+                            <field name="fee_structure_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="due_date"/>
+                            <field name="late_fee"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Fee Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="category_id"/>
+                                    <field name="name"/>
+                                    <field name="amount"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer">
+                                <field name="total_amount" readonly="1"/>
+                                <field name="amount_paid" readonly="1"/>
+                                <field name="amount_due" readonly="1" class="oe_subtotal_footer_separator"/>
+                            </group>
+                        </page>
+                        <page string="Payments">
+                            <field name="payment_ids" readonly="1">
+                                <list>
+                                    <field name="receipt_no"/>
+                                    <field name="date"/>
+                                    <field name="amount"/>
+                                    <field name="payment_mode"/>
+                                    <field name="transaction_ref"/>
+                                    <field name="state" widget="badge"
+                                        decoration-success="state == 'confirmed'"
+                                        decoration-muted="state == 'draft'"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_fee_invoice" model="ir.actions.act_window">
+        <field name="name">Fee Invoices</field>
+        <field name="res_model">school.fee.invoice</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_school_fee_invoice_pending" model="ir.actions.act_window">
+        <field name="name">Pending Invoices</field>
+        <field name="res_model">school.fee.invoice</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'in', ('pending','partial','overdue'))]</field>
+    </record>
+
+    <!-- ── Fee Payment ────────────────────────────────────────────────────── -->
+    <record id="view_school_fee_payment_list" model="ir.ui.view">
+        <field name="name">school.fee.payment.list</field>
+        <field name="model">school.fee.payment</field>
+        <field name="arch" type="xml">
+            <list string="Fee Payments">
+                <field name="receipt_no"/>
+                <field name="date"/>
+                <field name="student_id"/>
+                <field name="invoice_id"/>
+                <field name="amount"/>
+                <field name="payment_mode"/>
+                <field name="transaction_ref"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'confirmed'"
+                    decoration-muted="state == 'draft'"
+                    decoration-danger="state == 'cancelled'"/>
+                <field name="collected_by"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_fee_payment_form" model="ir.ui.view">
+        <field name="name">school.fee.payment.form</field>
+        <field name="model">school.fee.payment</field>
+        <field name="arch" type="xml">
+            <form string="Fee Payment">
+                <header>
+                    <button name="action_confirm" string="Confirm Payment" type="object"
+                        class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                        invisible="state != 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="receipt_no"/>
+                        <h1><field name="receipt_no" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="invoice_id"/>
+                            <field name="student_id" readonly="1"/>
+                            <field name="date"/>
+                            <field name="amount"/>
+                        </group>
+                        <group>
+                            <field name="payment_mode"/>
+                            <field name="transaction_ref"/>
+                            <field name="collected_by"/>
+                        </group>
+                    </group>
+                    <field name="notes"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_fee_payment" model="ir.actions.act_window">
+        <field name="name">Fee Payments</field>
+        <field name="res_model">school.fee.payment</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Fee Reminder Wizard ────────────────────────────────────────────── -->
+    <record id="view_school_fee_reminder_wizard_form" model="ir.ui.view">
+        <field name="name">school.fee.reminder.wizard.form</field>
+        <field name="model">school.fee.reminder.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Send Fee Reminders">
+                <sheet>
+                    <group>
+                        <field name="reminder_type"/>
+                        <field name="class_id" invisible="reminder_type != 'class'"/>
+                        <field name="academic_year_id"/>
+                        <field name="preview_count" readonly="1"/>
+                    </group>
+                    <group string="Message">
+                        <field name="message" nolabel="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_send_reminders" string="Send Reminders" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_fee_reminder_wizard" model="ir.actions.act_window">
+        <field name="name">Send Fee Reminders</field>
+        <field name="res_model">school.fee.reminder.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

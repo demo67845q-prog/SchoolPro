@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard client action -->
+    <record id="action_school_dashboard_client" model="ir.actions.client">
+        <field name="name">School Dashboard</field>
+        <field name="tag">school_dashboard</field>
+    </record>
+
+    <!-- ── Student Promotion Wizard ──────────────────────────────────────── -->
+    <record id="view_school_student_promotion_wizard_form" model="ir.ui.view">
+        <field name="name">school.student.promotion.wizard.form</field>
+        <field name="model">school.student.promotion.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Student Promotion">
+                <sheet>
+                    <group string="From">
+                        <field name="from_class_id"/>
+                        <field name="from_section_id" domain="[('class_id','=',from_class_id)]"/>
+                        <field name="promote_all"/>
+                    </group>
+                    <group string="Promote To">
+                        <field name="academic_year_id"/>
+                        <field name="to_class_id"/>
+                        <field name="to_section_id" domain="[('class_id','=',to_class_id)]"/>
+                    </group>
+                    <group string="Students">
+                        <field name="student_ids" widget="many2many_tags" nolabel="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_promote" string="Promote Students" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_student_promotion_wizard" model="ir.actions.act_window">
+        <field name="name">Promote Students</field>
+        <field name="res_model">school.student.promotion.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

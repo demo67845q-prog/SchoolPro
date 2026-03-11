@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Announcement ──────────────────────────────────────────────────── -->
+    <record id="view_school_announcement_list" model="ir.ui.view">
+        <field name="name">school.announcement.list</field>
+        <field name="model">school.announcement</field>
+        <field name="arch" type="xml">
+            <list string="Announcements"
+                decoration-danger="priority == 'urgent'"
+                decoration-warning="priority == 'important'">
+                <field name="title"/>
+                <field name="audience"/>
+                <field name="priority" widget="badge"
+                    decoration-danger="priority == 'urgent'"
+                    decoration-warning="priority == 'important'"
+                    decoration-info="priority == 'normal'"/>
+                <field name="date"/>
+                <field name="expiry_date"/>
+                <field name="state" widget="badge"
+                    decoration-success="state == 'published'"
+                    decoration-muted="state in ('draft','archived')"/>
+                <field name="author_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_announcement_form" model="ir.ui.view">
+        <field name="name">school.announcement.form</field>
+        <field name="model">school.announcement</field>
+        <field name="arch" type="xml">
+            <form string="Announcement">
+                <header>
+                    <button name="action_publish" string="Publish" type="object"
+                        class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_archive_ann" string="Archive" type="object"
+                        invisible="state != 'published'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,published,archived"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="title" placeholder="Announcement Title"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="audience"/>
+                            <field name="priority"/>
+                            <field name="date"/>
+                            <field name="expiry_date"/>
+                        </group>
+                        <group>
+                            <field name="class_id" invisible="audience != 'class'"/>
+                            <field name="author_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Content">
+                        <field name="content" nolabel="1" widget="html"/>
+                    </group>
+                    <group string="Attachments">
+                        <field name="attachment_ids" widget="many2many_binary" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_announcement" model="ir.actions.act_window">
+        <field name="name">Announcements</field>
+        <field name="res_model">school.announcement</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Notification ──────────────────────────────────────────────────── -->
+    <record id="view_school_notification_list" model="ir.ui.view">
+        <field name="name">school.notification.list</field>
+        <field name="model">school.notification</field>
+        <field name="arch" type="xml">
+            <list string="Notifications" decoration-muted="is_read">
+                <field name="title"/>
+                <field name="notif_type"/>
+                <field name="student_id"/>
+                <field name="recipient_type"/>
+                <field name="date"/>
+                <field name="is_read"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_notification_form" model="ir.ui.view">
+        <field name="name">school.notification.form</field>
+        <field name="model">school.notification</field>
+        <field name="arch" type="xml">
+            <form string="Notification">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="title"/>
+                            <field name="notif_type"/>
+                            <field name="recipient_type"/>
+                        </group>
+                        <group>
+                            <field name="student_id"/>
+                            <field name="date" readonly="1"/>
+                            <field name="is_read"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="message" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_notification" model="ir.actions.act_window">
+        <field name="name">Notifications</field>
+        <field name="res_model">school.notification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

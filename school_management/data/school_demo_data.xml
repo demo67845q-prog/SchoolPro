@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Academic Year -->
+        <record id="demo_academic_year_2425" model="school.academic.year">
+            <field name="name">2024-2025</field>
+            <field name="date_start">2024-06-01</field>
+            <field name="date_end">2025-03-31</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- School Config -->
+        <record id="demo_school_config" model="school.config">
+            <field name="name">Demo International School</field>
+            <field name="code">DIS-001</field>
+            <field name="phone">+1-555-0100</field>
+            <field name="email">admin@demo-school.edu</field>
+            <field name="city">Demo City</field>
+            <field name="academic_year_id" ref="demo_academic_year_2425"/>
+            <field name="admission_prefix">ADM</field>
+            <field name="student_id_prefix">STU</field>
+        </record>
+
+        <!-- Subjects -->
+        <record id="demo_subject_math" model="school.subject">
+            <field name="name">Mathematics</field>
+            <field name="code">MATH</field>
+            <field name="subject_type">theory</field>
+            <field name="max_marks">100</field>
+            <field name="pass_marks">35</field>
+        </record>
+
+        <record id="demo_subject_english" model="school.subject">
+            <field name="name">English</field>
+            <field name="code">ENG</field>
+            <field name="subject_type">language</field>
+            <field name="max_marks">100</field>
+            <field name="pass_marks">35</field>
+        </record>
+
+        <record id="demo_subject_science" model="school.subject">
+            <field name="name">Science</field>
+            <field name="code">SCI</field>
+            <field name="subject_type">theory</field>
+            <field name="max_marks">100</field>
+            <field name="pass_marks">35</field>
+        </record>
+
+        <record id="demo_subject_social" model="school.subject">
+            <field name="name">Social Studies</field>
+            <field name="code">SOC</field>
+            <field name="subject_type">theory</field>
+            <field name="max_marks">100</field>
+            <field name="pass_marks">35</field>
+        </record>
+
+        <record id="demo_subject_computer" model="school.subject">
+            <field name="name">Computer Science</field>
+            <field name="code">CS</field>
+            <field name="subject_type">elective</field>
+            <field name="max_marks">100</field>
+            <field name="pass_marks">35</field>
+        </record>
+
+        <!-- Classes -->
+        <record id="demo_class_grade9" model="school.class">
+            <field name="name">Grade 9</field>
+            <field name="code">G9</field>
+            <field name="sequence">9</field>
+            <field name="subject_ids" eval="[(4, ref('demo_subject_math')),
+                (4, ref('demo_subject_english')),
+                (4, ref('demo_subject_science')),
+                (4, ref('demo_subject_social')),
+                (4, ref('demo_subject_computer'))]"/>
+        </record>
+
+        <record id="demo_class_grade10" model="school.class">
+            <field name="name">Grade 10</field>
+            <field name="code">G10</field>
+            <field name="sequence">10</field>
+            <field name="subject_ids" eval="[(4, ref('demo_subject_math')),
+                (4, ref('demo_subject_english')),
+                (4, ref('demo_subject_science')),
+                (4, ref('demo_subject_social')),
+                (4, ref('demo_subject_computer'))]"/>
+        </record>
+
+        <!-- Periods -->
+        <record id="demo_period_1" model="school.period">
+            <field name="name">Period 1</field>
+            <field name="sequence">10</field>
+            <field name="start_time">8.0</field>
+            <field name="end_time">8.833</field>
+        </record>
+
+        <record id="demo_period_2" model="school.period">
+            <field name="name">Period 2</field>
+            <field name="sequence">20</field>
+            <field name="start_time">8.833</field>
+            <field name="end_time">9.666</field>
+        </record>
+
+        <record id="demo_period_break" model="school.period">
+            <field name="name">Break</field>
+            <field name="sequence">30</field>
+            <field name="start_time">9.666</field>
+            <field name="end_time">10.0</field>
+            <field name="is_break">True</field>
+        </record>
+
+        <record id="demo_period_3" model="school.period">
+            <field name="name">Period 3</field>
+            <field name="sequence">40</field>
+            <field name="start_time">10.0</field>
+            <field name="end_time">10.833</field>
+        </record>
+
+        <record id="demo_period_4" model="school.period">
+            <field name="name">Period 4</field>
+            <field name="sequence">50</field>
+            <field name="start_time">10.833</field>
+            <field name="end_time">11.666</field>
+        </record>
+
+        <!-- Fee Category -->
+        <record id="demo_fee_cat_tuition" model="school.fee.category">
+            <field name="name">Tuition Fee</field>
+            <field name="code">TF</field>
+        </record>
+
+        <record id="demo_fee_cat_transport" model="school.fee.category">
+            <field name="name">Transport Fee</field>
+            <field name="code">TRF</field>
+        </record>
+
+        <record id="demo_fee_cat_library" model="school.fee.category">
+            <field name="name">Library Fee</field>
+            <field name="code">LF</field>
+        </record>
+
+        <!-- Fee Structure -->
+        <record id="demo_fee_structure_g10" model="school.fee.structure">
+            <field name="name">Grade 10 Fee 2024-25</field>
+            <field name="academic_year_id" ref="demo_academic_year_2425"/>
+            <field name="class_id" ref="demo_class_grade10"/>
+        </record>
+
+        <record id="demo_fee_structure_line_tuition" model="school.fee.structure.line">
+            <field name="structure_id" ref="demo_fee_structure_g10"/>
+            <field name="category_id" ref="demo_fee_cat_tuition"/>
+            <field name="name">Quarterly Tuition</field>
+            <field name="amount">15000</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <record id="demo_fee_structure_line_library" model="school.fee.structure.line">
+            <field name="structure_id" ref="demo_fee_structure_g10"/>
+            <field name="category_id" ref="demo_fee_cat_library"/>
+            <field name="name">Annual Library</field>
+            <field name="amount">500</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- Library Books -->
+        <record id="demo_book_python" model="school.library.book">
+            <field name="title">Python Programming for Beginners</field>
+            <field name="author">John Smith</field>
+            <field name="isbn">978-0-123456-78-9</field>
+            <field name="category">Computer Science</field>
+            <field name="total_copies">5</field>
+            <field name="location">CS-01</field>
+        </record>
+
+        <record id="demo_book_algebra" model="school.library.book">
+            <field name="title">Advanced Algebra</field>
+            <field name="author">Mary Johnson</field>
+            <field name="isbn">978-0-234567-89-0</field>
+            <field name="category">Mathematics</field>
+            <field name="total_copies">8</field>
+            <field name="location">MATH-02</field>
+        </record>
+
+        <record id="demo_book_biology" model="school.library.book">
+            <field name="title">Biology Essentials</field>
+            <field name="author">David Williams</field>
+            <field name="isbn">978-0-345678-90-1</field>
+            <field name="category">Science</field>
+            <field name="total_copies">6</field>
+            <field name="location">SCI-03</field>
+        </record>
+    </data>
+</odoo>

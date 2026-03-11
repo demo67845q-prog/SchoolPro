@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Root App Menu ─────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_root"
+        name="School Management"
+        web_icon="school_management,static/description/icon.png"
+        sequence="95"/>
+
+    <!-- ── Dashboard ─────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_dashboard"
+        name="Dashboard"
+        parent="menu_school_root"
+        sequence="10"/>
+
+    <menuitem id="menu_school_dashboard_main"
+        name="Overview"
+        parent="menu_school_dashboard"
+        action="action_school_dashboard_client"
+        sequence="10"/>
+
+    <!-- ── Students ──────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_students"
+        name="Students"
+        parent="menu_school_root"
+        sequence="20"/>
+
+    <menuitem id="menu_school_student_all"
+        name="All Students"
+        parent="menu_school_students"
+        action="action_school_student"
+        sequence="10"/>
+
+    <menuitem id="menu_school_student_active"
+        name="Active Students"
+        parent="menu_school_students"
+        action="action_school_student_active"
+        sequence="20"/>
+
+    <menuitem id="menu_school_student_admissions"
+        name="New Admissions"
+        parent="menu_school_students"
+        action="action_school_student_draft"
+        sequence="30"/>
+
+    <menuitem id="menu_school_student_docs"
+        name="Documents"
+        parent="menu_school_students"
+        action="action_school_student_document"
+        sequence="40"/>
+
+    <menuitem id="menu_school_student_promote"
+        name="Promote Students"
+        parent="menu_school_students"
+        action="action_school_student_promotion_wizard"
+        sequence="50"/>
+
+    <!-- ── Teachers ──────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_teachers"
+        name="Teachers"
+        parent="menu_school_root"
+        sequence="30"/>
+
+    <menuitem id="menu_school_teacher_all"
+        name="All Teachers"
+        parent="menu_school_teachers"
+        action="action_school_teacher"
+        sequence="10"/>
+
+    <menuitem id="menu_school_teacher_attendance"
+        name="Teacher Attendance"
+        parent="menu_school_teachers"
+        action="action_school_teacher_attendance"
+        sequence="20"/>
+
+    <!-- ── Academics ─────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_academics"
+        name="Academics"
+        parent="menu_school_root"
+        sequence="40"/>
+
+    <menuitem id="menu_school_timetable"
+        name="Timetable"
+        parent="menu_school_academics"
+        action="action_school_timetable"
+        sequence="10"/>
+
+    <menuitem id="menu_school_attendance"
+        name="Attendance"
+        parent="menu_school_academics"
+        action="action_school_attendance"
+        sequence="20"/>
+
+    <menuitem id="menu_school_bulk_attendance"
+        name="Bulk Attendance"
+        parent="menu_school_academics"
+        action="action_school_attendance_bulk_wizard"
+        sequence="25"/>
+
+    <menuitem id="menu_school_homework"
+        name="Homework"
+        parent="menu_school_academics"
+        action="action_school_homework"
+        sequence="30"/>
+
+    <menuitem id="menu_school_homework_submissions"
+        name="Submissions"
+        parent="menu_school_academics"
+        action="action_school_homework_submission"
+        sequence="35"/>
+
+    <!-- ── Examinations ───────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_exams"
+        name="Examinations"
+        parent="menu_school_root"
+        sequence="50"/>
+
+    <menuitem id="menu_school_exam_all"
+        name="All Exams"
+        parent="menu_school_exams"
+        action="action_school_exam"
+        sequence="10"/>
+
+    <menuitem id="menu_school_exam_marks"
+        name="Mark Entry"
+        parent="menu_school_exams"
+        action="action_school_exam_mark"
+        sequence="20"/>
+
+    <!-- ── Fees ──────────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_fees"
+        name="Fees"
+        parent="menu_school_root"
+        sequence="60"/>
+
+    <menuitem id="menu_school_fee_invoice_all"
+        name="All Invoices"
+        parent="menu_school_fees"
+        action="action_school_fee_invoice"
+        sequence="10"/>
+
+    <menuitem id="menu_school_fee_invoice_pending"
+        name="Pending Invoices"
+        parent="menu_school_fees"
+        action="action_school_fee_invoice_pending"
+        sequence="20"/>
+
+    <menuitem id="menu_school_fee_payment"
+        name="Payments"
+        parent="menu_school_fees"
+        action="action_school_fee_payment"
+        sequence="30"/>
+
+    <menuitem id="menu_school_fee_reminder"
+        name="Send Reminders"
+        parent="menu_school_fees"
+        action="action_school_fee_reminder_wizard"
+        sequence="40"/>
+
+    <menuitem id="menu_school_fee_structure"
+        name="Fee Structures"
+        parent="menu_school_fees"
+        action="action_school_fee_structure"
+        sequence="50"/>
+
+    <menuitem id="menu_school_fee_category"
+        name="Fee Categories"
+        parent="menu_school_fees"
+        action="action_school_fee_category"
+        sequence="60"/>
+
+    <!-- ── Library ────────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_library"
+        name="Library"
+        parent="menu_school_root"
+        sequence="70"/>
+
+    <menuitem id="menu_school_library_books"
+        name="Books"
+        parent="menu_school_library"
+        action="action_school_library_book"
+        sequence="10"/>
+
+    <menuitem id="menu_school_library_issues"
+        name="Issues"
+        parent="menu_school_library"
+        action="action_school_library_issue"
+        sequence="20"/>
+
+    <menuitem id="menu_school_library_overdue"
+        name="Overdue"
+        parent="menu_school_library"
+        action="action_school_library_overdue"
+        sequence="30"/>
+
+    <!-- ── Transport ─────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_transport"
+        name="Transport"
+        parent="menu_school_root"
+        sequence="80"/>
+
+    <menuitem id="menu_school_transport_routes"
+        name="Routes"
+        parent="menu_school_transport"
+        action="action_school_transport_route"
+        sequence="10"/>
+
+    <menuitem id="menu_school_transport_vehicles"
+        name="Vehicles"
+        parent="menu_school_transport"
+        action="action_school_transport_vehicle"
+        sequence="20"/>
+
+    <menuitem id="menu_school_transport_students"
+        name="Student Transport"
+        parent="menu_school_transport"
+        action="action_school_transport_assignment"
+        sequence="30"/>
+
+    <!-- ── Hostel ─────────────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_hostel"
+        name="Hostel"
+        parent="menu_school_root"
+        sequence="90"/>
+
+    <menuitem id="menu_school_hostel_list"
+        name="Hostels"
+        parent="menu_school_hostel"
+        action="action_school_hostel"
+        sequence="10"/>
+
+    <menuitem id="menu_school_hostel_alloc"
+        name="Allocations"
+        parent="menu_school_hostel"
+        action="action_school_hostel_allocation"
+        sequence="20"/>
+
+    <!-- ── Communication ─────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_communication"
+        name="Communication"
+        parent="menu_school_root"
+        sequence="100"/>
+
+    <menuitem id="menu_school_announcement"
+        name="Announcements"
+        parent="menu_school_communication"
+        action="action_school_announcement"
+        sequence="10"/>
+
+    <menuitem id="menu_school_notification"
+        name="Notifications"
+        parent="menu_school_communication"
+        action="action_school_notification"
+        sequence="20"/>
+
+    <!-- ── Configuration ─────────────────────────────────────────────────── -->
+    <menuitem id="menu_school_config"
+        name="Configuration"
+        parent="menu_school_root"
+        sequence="200"/>
+
+    <menuitem id="menu_school_config_main"
+        name="School Settings"
+        parent="menu_school_config"
+        action="action_school_config"
+        sequence="10"/>
+
+    <menuitem id="menu_school_academic_year"
+        name="Academic Years"
+        parent="menu_school_config"
+        action="action_school_academic_year"
+        sequence="20"/>
+
+    <menuitem id="menu_school_class"
+        name="Classes"
+        parent="menu_school_config"
+        action="action_school_class"
+        sequence="30"/>
+
+    <menuitem id="menu_school_subject"
+        name="Subjects"
+        parent="menu_school_config"
+        action="action_school_subject"
+        sequence="40"/>
+
+    <menuitem id="menu_school_period"
+        name="Periods"
+        parent="menu_school_config"
+        action="action_school_period"
+        sequence="50"/>
+
+    <menuitem id="menu_school_section"
+        name="Sections"
+        parent="menu_school_config"
+        action="action_school_section"
+        sequence="60"/>
+</odoo>

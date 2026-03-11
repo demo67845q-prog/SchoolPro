@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_school_exam_result" model="ir.actions.report">
+        <field name="name">Report Card</field>
+        <field name="model">school.exam.result</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">school_management.report_report_card</field>
+        <field name="report_file">school_management.report_report_card</field>
+        <field name="binding_model_id" ref="model_school_exam_result"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+    </record>
+
+    <template id="report_report_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="result">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-2">
+                            <h2>REPORT CARD</h2>
+                            <h4><t t-esc="result.exam_id.name"/></h4>
+                        </div>
+
+                        <div class="row border-bottom pb-2 mb-3">
+                            <div class="col-8">
+                                <table class="table table-borderless table-sm">
+                                    <tr>
+                                        <td><strong>Student Name:</strong></td>
+                                        <td><t t-esc="result.student_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Admission No:</strong></td>
+                                        <td><t t-esc="result.student_id.admission_no"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Class:</strong></td>
+                                        <td><t t-esc="result.class_id.name"/> -
+                                            <t t-esc="result.section_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Exam:</strong></td>
+                                        <td><t t-esc="result.exam_id.exam_type"/>
+                                            (<t t-esc="result.exam_id.date_start"/> to
+                                             <t t-esc="result.exam_id.date_end"/>)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="border p-2">
+                                    <h4><t t-esc="result.grade"/></h4>
+                                    <div>Grade</div>
+                                    <h5><t t-esc="'%.1f' % result.percentage"/>%</h5>
+                                    <div>Percentage</div>
+                                    <div>Rank: <strong><t t-esc="result.rank or '-'"/></strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table table-bordered">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Subject</th>
+                                    <th class="text-center">Max Marks</th>
+                                    <th class="text-center">Marks Obtained</th>
+                                    <th class="text-center">Grade</th>
+                                    <th class="text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="result.mark_ids" t-as="mark">
+                                    <tr t-attf-class="#{mark.marks_obtained &lt; mark.pass_marks and not mark.is_absent and 'table-danger' or ''}">
+                                        <td><t t-esc="mark.subject_id.name"/></td>
+                                        <td class="text-center"><t t-esc="mark.max_marks"/></td>
+                                        <td class="text-center">
+                                            <t t-if="mark.is_absent">ABSENT</t>
+                                            <t t-else=""><t t-esc="mark.marks_obtained"/></t>
+                                        </td>
+                                        <td class="text-center"><t t-esc="mark.grade"/></td>
+                                        <td class="text-center">
+                                            <t t-if="mark.is_absent">Absent</t>
+                                            <t t-elif="mark.marks_obtained >= mark.pass_marks">Pass</t>
+                                            <t t-else="">Fail</t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                            <tfoot class="table-secondary">
+                                <tr>
+                                    <th>Total</th>
+                                    <th class="text-center"><t t-esc="result.max_marks"/></th>
+                                    <th class="text-center"><t t-esc="result.total_marks"/></th>
+                                    <th class="text-center"><t t-esc="result.grade"/></th>
+                                    <th class="text-center"><t t-esc="result.result or ''"/></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="row mt-4">
+                            <div class="col-4 text-center">
+                                <div class="border-top pt-2">Class Teacher</div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="border-top pt-2">Principal</div>
+                            </div>
+                            <div class="col-4 text-center">
+                                <div class="border-top pt-2">Parent/Guardian</div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

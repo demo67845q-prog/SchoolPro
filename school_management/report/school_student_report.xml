@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_school_student" model="ir.actions.report">
+        <field name="name">Student List</field>
+        <field name="model">school.student</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">school_management.report_student_list</field>
+        <field name="report_file">school_management.report_student_list</field>
+        <field name="binding_model_id" ref="model_school_student"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_student_list">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="student">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row mb-3">
+                            <div class="col-12 text-center">
+                                <h2>Student Details</h2>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <t t-if="student.photo">
+                                    <img t-att-src="'data:image/png;base64,' + student.photo.decode()"
+                                         style="max-width:100px;border-radius:4px;" class="img-thumbnail"/>
+                                </t>
+                            </div>
+                            <div class="col-9">
+                                <h3><t t-esc="student.name"/></h3>
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>Admission No:</strong></td>
+                                        <td><t t-esc="student.admission_no"/></td>
+                                        <td><strong>Class:</strong></td>
+                                        <td><t t-esc="student.class_id.name"/> -
+                                            <t t-esc="student.section_id.name or ''"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Date of Birth:</strong></td>
+                                        <td><t t-esc="student.date_of_birth"/></td>
+                                        <td><strong>Gender:</strong></td>
+                                        <td><t t-esc="student.gender"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Academic Year:</strong></td>
+                                        <td><t t-esc="student.academic_year_id.name"/></td>
+                                        <td><strong>Roll No:</strong></td>
+                                        <td><t t-esc="student.roll_number or '-'"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Father:</strong></td>
+                                        <td><t t-esc="student.father_name or '-'"/></td>
+                                        <td><strong>Phone:</strong></td>
+                                        <td><t t-esc="student.father_phone or '-'"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Attendance:</strong></td>
+                                        <td><t t-esc="'%.1f' % student.attendance_percent"/>%</td>
+                                        <td><strong>Status:</strong></td>
+                                        <td><t t-esc="student.state"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

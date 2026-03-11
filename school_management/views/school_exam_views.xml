@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ── Exam ──────────────────────────────────────────────────────────── -->
+    <record id="view_school_exam_list" model="ir.ui.view">
+        <field name="name">school.exam.list</field>
+        <field name="model">school.exam</field>
+        <field name="arch" type="xml">
+            <list string="Examinations">
+                <field name="name"/>
+                <field name="exam_type"/>
+                <field name="class_id"/>
+                <field name="academic_year_id"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="state" widget="badge"
+                    decoration-muted="state == 'draft'"
+                    decoration-info="state == 'published'"
+                    decoration-warning="state == 'ongoing'"
+                    decoration-success="state in ('completed','result_declared')"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_exam_form" model="ir.ui.view">
+        <field name="name">school.exam.form</field>
+        <field name="model">school.exam</field>
+        <field name="arch" type="xml">
+            <form string="Examination">
+                <header>
+                    <button name="action_publish" string="Publish" type="object"
+                        class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_start" string="Start Exam" type="object"
+                        class="btn-warning" invisible="state != 'published'"/>
+                    <button name="action_complete" string="Mark Completed" type="object"
+                        invisible="state != 'ongoing'"/>
+                    <button name="action_declare_result" string="Declare Results" type="object"
+                        class="btn-success" invisible="state != 'completed'"/>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,published,ongoing,completed,result_declared"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Exam Name"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="exam_type"/>
+                            <field name="academic_year_id"/>
+                            <field name="class_id"/>
+                        </group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Schedule">
+                            <field name="schedule_ids">
+                                <list editable="bottom">
+                                    <field name="subject_id"/>
+                                    <field name="exam_date"/>
+                                    <field name="start_time" widget="float_time"/>
+                                    <field name="end_time" widget="float_time"/>
+                                    <field name="max_marks"/>
+                                    <field name="pass_marks"/>
+                                    <field name="room"/>
+                                    <field name="invigilator_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Results">
+                            <field name="result_ids" readonly="1">
+                                <list>
+                                    <field name="student_id"/>
+                                    <field name="total_marks"/>
+                                    <field name="max_marks"/>
+                                    <field name="percentage"/>
+                                    <field name="grade"/>
+                                    <field name="rank"/>
+                                    <field name="result"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Instructions">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ── Exam Mark Entry ────────────────────────────────────────────────── -->
+    <record id="view_school_exam_mark_list" model="ir.ui.view">
+        <field name="name">school.exam.mark.list</field>
+        <field name="model">school.exam.mark</field>
+        <field name="arch" type="xml">
+            <list string="Marks Entry" editable="bottom">
+                <field name="result_id"/>
+                <field name="schedule_id"/>
+                <field name="subject_id" readonly="1"/>
+                <field name="marks_obtained"/>
+                <field name="max_marks" readonly="1"/>
+                <field name="pass_marks" readonly="1"/>
+                <field name="is_absent"/>
+                <field name="grade" readonly="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_school_exam" model="ir.actions.act_window">
+        <field name="name">Examinations</field>
+        <field name="res_model">school.exam</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_school_exam_mark" model="ir.actions.act_window">
+        <field name="name">Mark Entry</field>
+        <field name="res_model">school.exam.mark</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
