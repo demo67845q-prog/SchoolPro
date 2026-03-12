@@ -67,8 +67,7 @@ class SchoolDashboard extends Component {
 
         this.state.loading = false;
         this.state.lastUpdated = new Date().toLocaleTimeString();
-        // Defer chart rendering until DOM updates
-        setTimeout(() => this._renderCharts(), 100);
+        setTimeout(() => this._renderCharts(), 120);
     }
 
     async _loadStudentKpis() {
@@ -97,7 +96,6 @@ class SchoolDashboard extends Component {
             this.orm.searchCount("school.fee.invoice", [["state", "=", "partial"]]),
             this.orm.searchCount("school.fee.invoice", [["state", "=", "overdue"]]),
         ]);
-        // Get total due amount
         let totalDue = 0;
         try {
             const dueSums = await this.orm.readGroup(
@@ -132,7 +130,7 @@ class SchoolDashboard extends Component {
             "school.exam",
             [["state", "in", ["published", "ongoing", "draft"]]],
             ["name", "exam_type", "class_id", "date_start", "state"],
-            { limit: 8, order: "date_start asc" }
+            { limit: 5, order: "date_start asc" }
         );
         const stateColors = {
             draft: "secondary", published: "info", ongoing: "warning",
@@ -153,7 +151,7 @@ class SchoolDashboard extends Component {
             "school.announcement",
             [["state", "=", "published"]],
             ["title", "audience", "priority", "date"],
-            { limit: 5, order: "date desc" }
+            { limit: 4, order: "date desc" }
         );
         return anns.map(a => ({
             title: a.title, audience: a.audience,
@@ -175,13 +173,21 @@ class SchoolDashboard extends Component {
                     labels: ["Active", "New Admissions", "Other"],
                     datasets: [{
                         data: [k.active_students, k.new_admissions, other],
-                        backgroundColor: ["#2ecc71", "#3498db", "#95a5a6"],
-                        borderWidth: 2,
+                        backgroundColor: ["#10b981", "#06b6d4", "#cbd5e1"],
+                        borderWidth: 0,
+                        hoverOffset: 6,
                     }],
                 },
                 options: {
                     responsive: true,
-                    plugins: { legend: { position: "bottom" } },
+                    maintainAspectRatio: false,
+                    cutout: "65%",
+                    plugins: {
+                        legend: {
+                            position: "bottom",
+                            labels: { boxWidth: 10, padding: 8, font: { size: 10 } },
+                        },
+                    },
                 },
             }));
         }
@@ -194,15 +200,29 @@ class SchoolDashboard extends Component {
                 data: {
                     labels: ["Paid", "Pending", "Overdue"],
                     datasets: [{
-                        label: "Invoices",
                         data: [f.paid_invoices, f.pending_invoices, f.overdue_invoices],
-                        backgroundColor: ["#2ecc71", "#e67e22", "#e74c3c"],
+                        backgroundColor: ["#10b981", "#f59e0b", "#ef4444"],
+                        borderRadius: 4,
+                        barPercentage: 0.6,
                     }],
                 },
                 options: {
                     responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { precision: 0, font: { size: 10 } },
+                            grid: { color: "#f1f5f9" },
+                        },
+                        x: {
+                            ticks: { font: { size: 10 } },
+                            grid: { display: false },
+                        },
+                    },
                 },
             }));
         }

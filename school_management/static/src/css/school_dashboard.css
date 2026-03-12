@@ -1,179 +1,357 @@
-/* School Management Dashboard Styles */
+/* ── School Dashboard — Viewport-Fit Layout ── */
 
 .school-dashboard {
-    padding: 16px;
-    background: #f4f6f9;
-    min-height: 100vh;
+    height: calc(100vh - 46px);
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: 8px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf2 100%);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Header */
-.school-dashboard-header {
+/* ── Header ── */
+.sd-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
-    background: #fff;
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-
-.school-dashboard-header h2 {
-    margin: 0;
-    font-size: 1.4rem;
-    color: #2c3e50;
-}
-
-/* KPI Section */
-.school-kpi-section {
-    margin-bottom: 24px;
-}
-
-.school-kpi-section h5 {
-    color: #7f8c8d;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-}
-
-.school-kpi-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 12px;
-}
-
-/* KPI Cards */
-.school-kpi-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    border-left: 4px solid #ccc;
-    text-align: center;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.school-kpi-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-.school-kpi-card .kpi-value {
-    font-size: 2rem;
-    font-weight: 700;
-    line-height: 1;
-    margin-bottom: 4px;
-}
-
-.school-kpi-card .kpi-label {
-    font-size: 0.75rem;
-    color: #7f8c8d;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* KPI Themes */
-.school-kpi-card.kpi-total    { border-color: #3498db; color: #3498db; }
-.school-kpi-card.kpi-active   { border-color: #2ecc71; color: #2ecc71; }
-.school-kpi-card.kpi-teachers { border-color: #9b59b6; color: #9b59b6; }
-.school-kpi-card.kpi-classes  { border-color: #f39c12; color: #f39c12; }
-.school-kpi-card.kpi-fee      { border-color: #e74c3c; color: #e74c3c; }
-.school-kpi-card.kpi-paid     { border-color: #1abc9c; color: #1abc9c; }
-.school-kpi-card.kpi-pending  { border-color: #e67e22; color: #e67e22; }
-.school-kpi-card.kpi-books    { border-color: #3498db; color: #3498db; }
-.school-kpi-card.kpi-overdue  { border-color: #e74c3c; color: #e74c3c; }
-.school-kpi-card.kpi-att      { border-color: #2ecc71; color: #2ecc71; }
-
-/* Charts */
-.school-charts-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-.school-chart-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-
-.school-chart-card h6 {
-    margin-bottom: 16px;
-    color: #2c3e50;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Table Card */
-.school-table-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-    margin-bottom: 20px;
-}
-
-.school-table-card h6 {
-    margin-bottom: 16px;
-    color: #2c3e50;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.school-table-card table {
-    width: 100%;
-    font-size: 0.85rem;
-}
-
-.school-table-card th {
-    background: #f8f9fa;
-    padding: 8px;
-    border-bottom: 2px solid #dee2e6;
-}
-
-.school-table-card td {
-    padding: 7px 8px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-/* Loading / Error */
-.school-loading {
-    text-align: center;
-    padding: 80px 20px;
-    color: #7f8c8d;
-    font-size: 1.1rem;
-}
-
-/* Refresh Button */
-.school-refresh-btn {
-    background: none;
-    border: 1px solid #3498db;
-    color: #3498db;
-    padding: 4px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: background 0.15s;
-}
-
-.school-refresh-btn:hover {
-    background: #3498db;
+    background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+    padding: 8px 16px;
+    border-radius: 10px;
     color: #fff;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .school-charts-row {
-        grid-template-columns: 1fr;
-    }
+.sd-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: #ffffff;
+}
 
-    .school-kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.sd-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sd-header .sd-updated {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+.sd-refresh-btn {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+}
+
+.sd-refresh-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+/* ── KPI Row (compact strip) ── */
+.sd-kpi-row {
+    display: grid;
+    gap: 8px;
+}
+
+.sd-kpi-row.students { grid-template-columns: repeat(6, 1fr); }
+.sd-kpi-row.fees     { grid-template-columns: repeat(5, 1fr); }
+
+.sd-kpi {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    transition: transform 0.15s, box-shadow 0.15s;
+    border-left: 3px solid transparent;
+}
+
+.sd-kpi:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.sd-kpi-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.sd-kpi-text {
+    min-width: 0;
+}
+
+.sd-kpi-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: #1e293b;
+}
+
+.sd-kpi-label {
+    font-size: 0.62rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* KPI color themes */
+.sd-kpi.t-blue    { border-color: #3b82f6; }
+.sd-kpi.t-blue    .sd-kpi-icon { background: #eff6ff; color: #3b82f6; }
+.sd-kpi.t-green   { border-color: #10b981; }
+.sd-kpi.t-green   .sd-kpi-icon { background: #ecfdf5; color: #10b981; }
+.sd-kpi.t-purple  { border-color: #8b5cf6; }
+.sd-kpi.t-purple  .sd-kpi-icon { background: #f5f3ff; color: #8b5cf6; }
+.sd-kpi.t-amber   { border-color: #f59e0b; }
+.sd-kpi.t-amber   .sd-kpi-icon { background: #fffbeb; color: #f59e0b; }
+.sd-kpi.t-red     { border-color: #ef4444; }
+.sd-kpi.t-red     .sd-kpi-icon { background: #fef2f2; color: #ef4444; }
+.sd-kpi.t-teal    { border-color: #14b8a6; }
+.sd-kpi.t-teal    .sd-kpi-icon { background: #f0fdfa; color: #14b8a6; }
+.sd-kpi.t-cyan    { border-color: #06b6d4; }
+.sd-kpi.t-cyan    .sd-kpi-icon { background: #ecfeff; color: #06b6d4; }
+.sd-kpi.t-orange  { border-color: #f97316; }
+.sd-kpi.t-orange  .sd-kpi-icon { background: #fff7ed; color: #f97316; }
+
+/* ── Middle Row: Charts + Library ── */
+.sd-middle {
+    display: grid;
+    grid-template-columns: 1fr 1fr 280px;
+    gap: 8px;
+    min-height: 0;
+}
+
+.sd-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.sd-card-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sd-card-title i {
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+.sd-chart-wrap {
+    flex: 1;
+    position: relative;
+    min-height: 0;
+}
+
+.sd-chart-wrap canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Library panel in middle row */
+.sd-library-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sd-lib-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f8fafc;
+    border-radius: 8px;
+    flex: 1;
+}
+
+.sd-lib-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.sd-lib-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1;
+}
+
+.sd-lib-label {
+    font-size: 0.62rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+}
+
+.sd-lib-item.lib-total .sd-lib-icon { background: #eff6ff; color: #3b82f6; }
+.sd-lib-item.lib-issued .sd-lib-icon { background: #fef3c7; color: #f59e0b; }
+.sd-lib-item.lib-overdue .sd-lib-icon { background: #fef2f2; color: #ef4444; }
+
+/* ── Bottom Row: Tables side by side ── */
+.sd-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.sd-table-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.sd-table-card .sd-card-title {
+    flex-shrink: 0;
+}
+
+.sd-table-wrap {
+    flex: 1;
+    overflow: hidden;
+}
+
+.sd-table-wrap table {
+    width: 100%;
+    font-size: 0.75rem;
+    border-collapse: collapse;
+}
+
+.sd-table-wrap th {
+    background: #f1f5f9;
+    padding: 5px 8px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.65rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.sd-table-wrap td {
+    padding: 4px 8px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.sd-table-wrap tbody tr:hover {
+    background: #f8fafc;
+}
+
+.sd-table-wrap .badge {
+    font-size: 0.62rem;
+    padding: 2px 6px;
+    font-weight: 600;
+}
+
+.sd-empty {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 0.78rem;
+    padding: 16px 0;
+}
+
+/* Priority pills */
+.sd-priority-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.sd-priority-dot.urgent  { background: #ef4444; }
+.sd-priority-dot.important { background: #f59e0b; }
+.sd-priority-dot.normal  { background: #10b981; }
+
+/* ── Loading overlay ── */
+.sd-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    height: calc(100vh - 100px);
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.sd-loading .fa-spinner {
+    font-size: 1.5rem;
+    color: #3b82f6;
+}
+
+/* ── Responsive (tablets) ── */
+@media (max-width: 1200px) {
+    .sd-kpi-row.students { grid-template-columns: repeat(3, 1fr); }
+    .sd-kpi-row.fees     { grid-template-columns: repeat(3, 1fr); }
+    .sd-middle           { grid-template-columns: 1fr 1fr; }
+    .sd-middle .sd-card:last-child { grid-column: 1 / -1; }
+    .sd-library-panel    { flex-direction: row; }
+    .school-dashboard    { overflow-y: auto; height: auto; min-height: calc(100vh - 46px); }
+}
+
+@media (max-width: 768px) {
+    .sd-kpi-row.students,
+    .sd-kpi-row.fees     { grid-template-columns: repeat(2, 1fr); }
+    .sd-middle           { grid-template-columns: 1fr; }
+    .sd-bottom           { grid-template-columns: 1fr; }
+    .sd-library-panel    { flex-direction: column; }
 }

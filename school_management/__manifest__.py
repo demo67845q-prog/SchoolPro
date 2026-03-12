@@ -22,7 +22,7 @@ School Management System for Odoo 18
 * Reports: Student List, Fee Invoice, Report Card
 * 9 Security Roles with Record Rules
     """,
-    'author': 'QSS',
+    'author': 'Ankit',
     'category': 'Education',
     'sequence': 95,
     'depends': [
