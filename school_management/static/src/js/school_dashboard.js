@@ -71,18 +71,24 @@ class SchoolDashboard extends Component {
     }
 
     async _loadStudentKpis() {
-        const [total, active, draft, teachers, classes] = await Promise.all([
+        const [total, active, draft, teachers, classes, todayTotal, todayPresent] = await Promise.all([
             this.orm.searchCount("school.student", []),
             this.orm.searchCount("school.student", [["state", "=", "active"]]),
             this.orm.searchCount("school.student", [["state", "=", "draft"]]),
             this.orm.searchCount("school.teacher", [["state", "=", "active"]]),
             this.orm.searchCount("school.class", []),
+            this.orm.searchCount("school.attendance", [["date", "=", new Date().toISOString().split("T")[0]]]),
+            this.orm.searchCount("school.attendance", [
+                ["date", "=", new Date().toISOString().split("T")[0]],
+                ["status", "=", "present"],
+            ]),
         ]);
+        const avgAtt = todayTotal > 0 ? ((todayPresent / todayTotal) * 100).toFixed(1) : "0.0";
         return {
             total_students: total,
             active_students: active,
             new_admissions: draft,
-            avg_attendance: "—",
+            avg_attendance: avgAtt,
             total_teachers: teachers,
             total_classes: classes,
         };
