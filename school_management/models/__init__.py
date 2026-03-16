@@ -11,4 +11,5 @@ from . import school_library
 from . import school_transport
 from . import school_hostel
 from . import school_communication
+from . import school_event
 from . import school_dashboard

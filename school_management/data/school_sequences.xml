@@ -54,5 +54,15 @@
             <field name="number_next">1</field>
             <field name="number_increment">1</field>
         </record>
+        <!-- Event Code -->
+        <record id="seq_school_event" model="ir.sequence">
+            <field name="name">School Event</field>
+            <field name="code">school.event</field>
+            <field name="prefix">EVT/%(year)s/</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="use_date_range">True</field>
+        </record>
     </data>
 </odoo>

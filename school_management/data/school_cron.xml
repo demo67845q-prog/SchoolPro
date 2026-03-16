@@ -18,7 +18,7 @@
             <field name="name">School: Mark Fee Invoices Overdue</field>
             <field name="model_id" ref="school_management.model_school_fee_invoice"/>
             <field name="state">code</field>
-            <field name="code">model._apply_late_fee(50)</field>
+            <field name="code">model._apply_late_fee()</field>
             <field name="interval_number">1</field>
             <field name="interval_type">days</field>
             <field name="active" eval="True"/>

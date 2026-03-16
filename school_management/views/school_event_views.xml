@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══ Event List View ═══════════════════════════════════════════ -->
+    <record id="view_school_event_list" model="ir.ui.view">
+        <field name="name">school.event.list</field>
+        <field name="model">school.event</field>
+        <field name="arch" type="xml">
+            <list string="Events" decoration-muted="state == 'cancelled'"
+                  decoration-success="state == 'completed'">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="event_type"/>
+                <field name="date"/>
+                <field name="academic_year_id" optional="show"/>
+                <field name="organizer_id" optional="show"/>
+                <field name="venue" optional="hide"/>
+                <field name="winner_count" string="Winners"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'draft'"
+                       decoration-warning="state == 'ongoing'"
+                       decoration-success="state == 'completed'"
+                       decoration-muted="state == 'cancelled'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══ Event Form View ═══════════════════════════════════════════ -->
+    <record id="view_school_event_form" model="ir.ui.view">
+        <field name="name">school.event.form</field>
+        <field name="model">school.event</field>
+        <field name="arch" type="xml">
+            <form string="School Event">
+                <header>
+                    <button name="action_start" string="Start Event"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_complete" string="Mark Completed"
+                            type="object" class="btn-success"
+                            invisible="state != 'ongoing'"/>
+                    <button name="action_cancel" string="Cancel"
+                            type="object"
+                            invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_reset_draft" string="Reset to Draft"
+                            type="object"
+                            invisible="state not in ('cancelled',)"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,ongoing,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_winners" type="object"
+                                class="oe_stat_button" icon="fa-trophy">
+                            <field name="winner_count" widget="statinfo" string="Winners"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Event Name"/></h1>
+                        <field name="code" readonly="1"/>
+                    </div>
+                    <group>
+                        <group string="Event Details">
+                            <field name="event_type"/>
+                            <field name="date"/>
+                            <field name="venue"/>
+                            <field name="organizer_id"/>
+                        </group>
+                        <group string="Academic Info">
+                            <field name="academic_year_id"/>
+                            <field name="class_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description &amp; Photos">
+                            <group>
+                                <field name="description" widget="html" nolabel="1"
+                                       colspan="2" placeholder="Event description..."/>
+                            </group>
+                            <group string="Event Photos">
+                                <group>
+                                    <field name="image_1" widget="image"
+                                           options="{'size': [300, 200]}"/>
+                                </group>
+                                <group>
+                                    <field name="image_2" widget="image"
+                                           options="{'size': [300, 200]}"/>
+                                </group>
+                                <group>
+                                    <field name="image_3" widget="image"
+                                           options="{'size': [300, 200]}"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Winners">
+                            <field name="winner_ids">
+                                <list editable="bottom">
+                                    <field name="position"/>
+                                    <field name="student_id"/>
+                                    <field name="class_id" readonly="1"/>
+                                    <field name="category"/>
+                                    <field name="remarks"/>
+                                    <button name="action_print_certificate" type="object"
+                                            string="Certificate" icon="fa-certificate"
+                                            class="btn-link"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══ Event Search View ═════════════════════════════════════════ -->
+    <record id="view_school_event_search" model="ir.ui.view">
+        <field name="name">school.event.search</field>
+        <field name="model">school.event</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Event"/>
+                <field name="code"/>
+                <field name="organizer_id"/>
+                <separator/>
+                <filter name="draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="ongoing" string="Ongoing" domain="[('state','=','ongoing')]"/>
+                <filter name="completed" string="Completed" domain="[('state','=','completed')]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_type" string="Event Type" context="{'group_by': 'event_type'}"/>
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_year" string="Academic Year" context="{'group_by': 'academic_year_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══ Event Action ══════════════════════════════════════════════ -->
+    <record id="action_school_event" model="ir.actions.act_window">
+        <field name="name">School Events</field>
+        <field name="res_model">school.event</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_school_event_search"/>
+    </record>
+
+    <!-- ═══ Event Winner List View ════════════════════════════════════ -->
+    <record id="view_school_event_winner_list" model="ir.ui.view">
+        <field name="name">school.event.winner.list</field>
+        <field name="model">school.event.winner</field>
+        <field name="arch" type="xml">
+            <list string="Event Winners"
+                  decoration-danger="position == '1'"
+                  decoration-warning="position == '2'"
+                  decoration-info="position == '3'">
+                <field name="event_id"/>
+                <field name="student_id"/>
+                <field name="class_id"/>
+                <field name="academic_year_id"/>
+                <field name="position"/>
+                <field name="category" optional="show"/>
+                <field name="remarks" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══ Event Winner Form View ════════════════════════════════════ -->
+    <record id="view_school_event_winner_form" model="ir.ui.view">
+        <field name="name">school.event.winner.form</field>
+        <field name="model">school.event.winner</field>
+        <field name="arch" type="xml">
+            <form string="Event Winner">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="event_id"/>
+                            <field name="student_id"/>
+                            <field name="class_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="position"/>
+                            <field name="academic_year_id" readonly="1"/>
+                            <field name="category"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="remarks"/>
+                    </group>
+                    <footer>
+                        <button name="action_print_certificate" type="object"
+                                string="Print Certificate" class="btn-primary"
+                                icon="fa-certificate"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══ Event Winner Search View ══════════════════════════════════ -->
+    <record id="view_school_event_winner_search" model="ir.ui.view">
+        <field name="name">school.event.winner.search</field>
+        <field name="model">school.event.winner</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="event_id"/>
+                <field name="student_id"/>
+                <field name="class_id"/>
+                <separator/>
+                <filter name="first" string="1st Place" domain="[('position','=','1')]"/>
+                <filter name="second" string="2nd Place" domain="[('position','=','2')]"/>
+                <filter name="third" string="3rd Place" domain="[('position','=','3')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_event" string="Event" context="{'group_by': 'event_id'}"/>
+                    <filter name="group_class" string="Class" context="{'group_by': 'class_id'}"/>
+                    <filter name="group_year" string="Academic Year" context="{'group_by': 'academic_year_id'}"/>
+                    <filter name="group_position" string="Position" context="{'group_by': 'position'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══ Event Winner Action ═══════════════════════════════════════ -->
+    <record id="action_school_event_winner" model="ir.actions.act_window">
+        <field name="name">Event Winners</field>
+        <field name="res_model">school.event.winner</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_school_event_winner_search"/>
+    </record>
+</odoo>

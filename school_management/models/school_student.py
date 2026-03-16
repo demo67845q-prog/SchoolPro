@@ -81,7 +81,7 @@ class SchoolStudent(models.Model):
     # ── Previous School ──────────────────────────────────────────────
     previous_school = fields.Char(string='Previous School')
     previous_class = fields.Char(string='Previous Class')
-    transfer_certificate = fields.Char(string='TC Number')
+    transfer_certificate = fields.Char(string='PEN Number (Apaar ID)')
     reason_for_leaving = fields.Text(string='Reason for Leaving')
 
     # ── Documents ────────────────────────────────────────────────────

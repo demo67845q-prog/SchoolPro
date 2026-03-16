@@ -51,12 +51,14 @@ School Management System for Odoo 18
         'views/school_library_views.xml',
         'views/school_transport_views.xml',
         'views/school_hostel_views.xml',
+        'views/school_event_views.xml',
         'views/school_communication_views.xml',
         'views/school_dashboard_views.xml',
         # Reports
         'report/school_student_report.xml',
         'report/school_fee_receipt.xml',
         'report/school_report_card.xml',
+        'report/school_event_certificate.xml',
         # Menus (last — all actions must exist)
         'views/school_menus.xml',
         # Cron

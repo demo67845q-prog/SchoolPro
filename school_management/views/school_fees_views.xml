@@ -1,5 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- ── Fee Schedule ──────────────────────────────────────────────────── -->
+    <record id="view_school_fee_schedule_list" model="ir.ui.view">
+        <field name="name">school.fee.schedule.list</field>
+        <field name="model">school.fee.schedule</field>
+        <field name="arch" type="xml">
+            <list string="Fee Schedules">
+                <field name="name"/>
+                <field name="academic_year_id"/>
+                <field name="due_day"/>
+                <field name="late_fee_amount"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_school_fee_schedule_form" model="ir.ui.view">
+        <field name="name">school.fee.schedule.form</field>
+        <field name="model">school.fee.schedule</field>
+        <field name="arch" type="xml">
+            <form string="Fee Schedule">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="e.g. Fee Schedule 2025-26"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="academic_year_id"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group>
+                            <field name="due_day"/>
+                            <field name="late_fee_amount"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="month"/>
+                            <field name="category_id"/>
+                            <field name="only_new_students"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_fee_schedule" model="ir.actions.act_window">
+        <field name="name">Fee Schedules</field>
+        <field name="res_model">school.fee.schedule</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Fee Generate Wizard ──────────────────────────────────────────── -->
+    <record id="view_school_fee_generate_wizard_form" model="ir.ui.view">
+        <field name="name">school.fee.generate.wizard.form</field>
+        <field name="model">school.fee.generate.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generate Monthly Invoices">
+                <sheet>
+                    <group>
+                        <field name="schedule_id"/>
+                        <field name="month"/>
+                        <field name="class_ids" widget="many2many_tags"/>
+                        <field name="preview_count" readonly="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_generate_invoices" string="Generate Invoices"
+                        type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_school_fee_generate_wizard" model="ir.actions.act_window">
+        <field name="name">Generate Monthly Invoices</field>
+        <field name="res_model">school.fee.generate.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
     <!-- ── Fee Category ──────────────────────────────────────────────────── -->
     <record id="view_school_fee_category_list" model="ir.ui.view">
         <field name="name">school.fee.category.list</field>
@@ -84,6 +166,7 @@
                 <field name="student_id"/>
                 <field name="class_id"/>
                 <field name="academic_year_id"/>
+                <field name="month"/>
                 <field name="date"/>
                 <field name="due_date"/>
                 <field name="total_amount"/>
@@ -131,7 +214,10 @@
                         <group>
                             <field name="date"/>
                             <field name="due_date"/>
+                            <field name="month"/>
+                            <field name="schedule_id"/>
                             <field name="late_fee"/>
+                            <field name="late_fee_applied" invisible="1"/>
                         </group>
                     </group>
                     <notebook>

@@ -25,6 +25,12 @@ class SchoolTeacher(models.Model):
         ('O+', 'O+'), ('O-', 'O-'), ('AB+', 'AB+'), ('AB-', 'AB-'),
     ], string='Blood Group')
     nationality = fields.Many2one('res.country', string='Nationality')
+    marital_status = fields.Selection([
+        ('single', 'Single'),
+        ('married', 'Married'),
+        ('divorced', 'Divorced'),
+        ('widowed', 'Widowed'),
+    ], string='Marital Status')
 
     # ── Contact ──────────────────────────────────────────────────────
     phone = fields.Char(string='Phone')

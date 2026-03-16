@@ -114,7 +114,7 @@
                     </div>
                 </div>
 
-                <!-- ── Row 3: Charts + Library ── -->
+                <!-- ── Row 3: Charts ── -->
                 <div class="sd-middle">
                     <div class="sd-card">
                         <div class="sd-card-title">
@@ -130,34 +130,6 @@
                         </div>
                         <div class="sd-chart-wrap">
                             <canvas id="schoolFeeChart"/>
-                        </div>
-                    </div>
-                    <div class="sd-card">
-                        <div class="sd-card-title">
-                            <i class="fa fa-book"/> Library
-                        </div>
-                        <div class="sd-library-panel">
-                            <div class="sd-lib-item lib-total">
-                                <div class="sd-lib-icon"><i class="fa fa-book"/></div>
-                                <div>
-                                    <div class="sd-lib-value" t-esc="state.libraryKpis.total_books"/>
-                                    <div class="sd-lib-label">Total Books</div>
-                                </div>
-                            </div>
-                            <div class="sd-lib-item lib-issued">
-                                <div class="sd-lib-icon"><i class="fa fa-share"/></div>
-                                <div>
-                                    <div class="sd-lib-value" t-esc="state.libraryKpis.books_issued"/>
-                                    <div class="sd-lib-label">Issued</div>
-                                </div>
-                            </div>
-                            <div class="sd-lib-item lib-overdue">
-                                <div class="sd-lib-icon"><i class="fa fa-warning"/></div>
-                                <div>
-                                    <div class="sd-lib-value" t-esc="state.libraryKpis.overdue_books"/>
-                                    <div class="sd-lib-label">Overdue</div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

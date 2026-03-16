@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- ═══ Report Action ═════════════════════════════════════════════ -->
+    <record id="action_report_event_certificate" model="ir.actions.report">
+        <field name="name">Event Certificate</field>
+        <field name="model">school.event.winner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">school_management.report_event_certificate</field>
+        <field name="report_file">school_management.report_event_certificate</field>
+        <field name="binding_model_id" ref="model_school_event_winner"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ═══ Certificate Template ══════════════════════════════════════ -->
+    <template id="report_event_certificate">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page" style="padding: 0; margin: 0;">
+                        <!-- Outer border frame -->
+                        <div style="border: 8px double #1a2980; padding: 30px; margin: 20px;
+                                    min-height: 500px; position: relative; background: #ffffff;">
+
+                            <!-- Inner decorative border -->
+                            <div style="border: 2px solid #26d0ce; padding: 30px;
+                                        min-height: 440px; text-align: center;">
+
+                                <!-- Top decoration -->
+                                <div style="margin-bottom: 10px;">
+                                    <span style="font-size: 28px; color: #d4af37; letter-spacing: 4px;">&#9733; &#9733; &#9733;</span>
+                                </div>
+
+                                <!-- Title -->
+                                <h1 style="font-family: Georgia, serif; font-size: 42px;
+                                           color: #1a2980; margin: 5px 0; font-weight: 700;
+                                           letter-spacing: 3px; text-transform: uppercase;">
+                                    Certificate of Achievement
+                                </h1>
+
+                                <div style="width: 200px; height: 3px; background: linear-gradient(90deg, #1a2980, #26d0ce);
+                                            margin: 15px auto;"/>
+
+                                <!-- School name -->
+                                <t t-set="config" t-value="o.env['school.config'].search([], limit=1)"/>
+                                <p style="font-size: 16px; color: #475569; margin: 8px 0;
+                                          font-style: italic;" t-if="config">
+                                    <t t-esc="config.name"/>
+                                </p>
+
+                                <!-- Presented to -->
+                                <p style="font-size: 16px; color: #64748b; margin: 20px 0 5px;">
+                                    This certificate is proudly presented to
+                                </p>
+
+                                <!-- Student name -->
+                                <h2 style="font-family: Georgia, serif; font-size: 36px;
+                                           color: #1a2980; margin: 5px 0; font-weight: 700;
+                                           border-bottom: 2px solid #d4af37; display: inline-block;
+                                           padding: 0 30px 5px;">
+                                    <t t-esc="o.student_id.name"/>
+                                </h2>
+
+                                <!-- Class -->
+                                <p style="font-size: 14px; color: #64748b; margin: 5px 0;">
+                                    Class: <strong><t t-esc="o.class_id.name or '-'"/></strong>
+                                    <t t-if="o.student_id.section_id">
+                                        , Section: <strong><t t-esc="o.student_id.section_id.name"/></strong>
+                                    </t>
+                                </p>
+
+                                <!-- Achievement -->
+                                <p style="font-size: 16px; color: #334155; margin: 15px 0 5px;">
+                                    for achieving
+                                </p>
+
+                                <!-- Position badge -->
+                                <t t-set="pos_colors" t-value="{'1': '#d4af37', '2': '#94a3b8', '3': '#cd7f32'}"/>
+                                <t t-set="pos_names" t-value="{'1': '1st Place', '2': '2nd Place', '3': '3rd Place'}"/>
+                                <div style="margin: 10px 0;">
+                                    <span t-attf-style="font-size: 28px; font-weight: 800;
+                                                        color: #{pos_colors.get(o.position, '#1a2980')};
+                                                        font-family: Georgia, serif;
+                                                        letter-spacing: 2px;">
+                                        <t t-esc="pos_names.get(o.position, '')"/>
+                                    </span>
+                                </div>
+
+                                <!-- Event details -->
+                                <p style="font-size: 16px; color: #334155; margin: 8px 0;">
+                                    in <strong><t t-esc="o.event_id.name"/></strong>
+                                    <t t-if="o.category">
+                                        — <em><t t-esc="o.category"/></em>
+                                    </t>
+                                </p>
+
+                                <p style="font-size: 14px; color: #64748b; margin: 5px 0;">
+                                    <t t-if="o.event_id.event_type">
+                                        Event Type: <t t-esc="dict(o.event_id._fields['event_type'].selection).get(o.event_id.event_type, '')"/>
+                                    </t>
+                                    <t t-if="o.event_id.date">
+                                        | Date: <t t-esc="o.event_id.date" t-options="{'widget': 'date'}"/>
+                                    </t>
+                                </p>
+
+                                <!-- Academic year -->
+                                <p style="font-size: 13px; color: #94a3b8; margin: 5px 0;"
+                                   t-if="o.academic_year_id">
+                                    Academic Year: <t t-esc="o.academic_year_id.name"/>
+                                </p>
+
+                                <!-- Signature area -->
+                                <div style="display: flex; justify-content: space-between;
+                                            margin-top: 30px; padding: 0 60px;">
+                                    <div style="text-align: center;">
+                                        <div style="width: 180px; border-top: 1px solid #94a3b8;
+                                                    padding-top: 5px; font-size: 12px; color: #64748b;">
+                                            Organizer
+                                            <br/>
+                                            <t t-if="o.event_id.organizer_id">
+                                                <t t-esc="o.event_id.organizer_id.name"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center;">
+                                        <div style="width: 180px; border-top: 1px solid #94a3b8;
+                                                    padding-top: 5px; font-size: 12px; color: #64748b;">
+                                            Principal
+                                            <br/>
+                                            <t t-if="config and config.principal_id">
+                                                <t t-esc="config.principal_id.name"/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom decoration -->
+                                <div style="margin-top: 15px;">
+                                    <span style="font-size: 20px; color: #d4af37; letter-spacing: 4px;">&#9733; &#9733; &#9733;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

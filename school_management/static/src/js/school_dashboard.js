@@ -24,7 +24,6 @@ class SchoolDashboard extends Component {
                 total_invoices: 0, paid_invoices: 0, pending_invoices: 0,
                 overdue_invoices: 0, total_due_amount: "0",
             },
-            libraryKpis: { total_books: 0, books_issued: 0, overdue_books: 0 },
             upcomingExams: [],
             announcements: [],
         });
@@ -54,20 +53,18 @@ class SchoolDashboard extends Component {
         const results = await Promise.allSettled([
             this._loadStudentKpis(),
             this._loadFeeKpis(),
-            this._loadLibraryKpis(),
             this._loadUpcomingExams(),
             this._loadAnnouncements(),
         ]);
 
         if (results[0].status === "fulfilled") Object.assign(this.state.studentKpis, results[0].value);
         if (results[1].status === "fulfilled") Object.assign(this.state.feeKpis, results[1].value);
-        if (results[2].status === "fulfilled") Object.assign(this.state.libraryKpis, results[2].value);
-        if (results[3].status === "fulfilled") this.state.upcomingExams = results[3].value;
-        if (results[4].status === "fulfilled") this.state.announcements = results[4].value;
+        if (results[2].status === "fulfilled") this.state.upcomingExams = results[2].value;
+        if (results[3].status === "fulfilled") this.state.announcements = results[3].value;
 
         this.state.loading = false;
         this.state.lastUpdated = new Date().toLocaleTimeString();
-        setTimeout(() => this._renderCharts(), 120);
+        setTimeout(() => this._renderCharts(), 300);
     }
 
     async _loadStudentKpis() {
@@ -120,15 +117,6 @@ class SchoolDashboard extends Component {
             overdue_invoices: overdue,
             total_due_amount: Math.round(totalDue).toLocaleString(),
         };
-    }
-
-    async _loadLibraryKpis() {
-        const [books, issued, overdueLib] = await Promise.all([
-            this.orm.searchCount("school.library.book", [["is_active", "=", true]]),
-            this.orm.searchCount("school.library.issue", [["state", "=", "issued"]]),
-            this.orm.searchCount("school.library.issue", [["state", "=", "overdue"]]),
-        ]);
-        return { total_books: books, books_issued: issued, overdue_books: overdueLib };
     }
 
     async _loadUpcomingExams() {
@@ -191,7 +179,7 @@ class SchoolDashboard extends Component {
                     plugins: {
                         legend: {
                             position: "bottom",
-                            labels: { boxWidth: 10, padding: 8, font: { size: 10 } },
+                            labels: { boxWidth: 12, padding: 12, font: { size: 13 } },
                         },
                     },
                 },
@@ -221,11 +209,11 @@ class SchoolDashboard extends Component {
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks: { precision: 0, font: { size: 10 } },
+                            ticks: { precision: 0, font: { size: 13 } },
                             grid: { color: "#f1f5f9" },
                         },
                         x: {
-                            ticks: { font: { size: 10 } },
+                            ticks: { font: { size: 13 } },
                             grid: { display: false },
                         },
                     },

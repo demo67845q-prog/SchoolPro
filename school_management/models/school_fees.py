@@ -4,6 +4,13 @@ from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
+MONTH_SELECTION = [
+    ('1', 'January'), ('2', 'February'), ('3', 'March'),
+    ('4', 'April'), ('5', 'May'), ('6', 'June'),
+    ('7', 'July'), ('8', 'August'), ('9', 'September'),
+    ('10', 'October'), ('11', 'November'), ('12', 'December'),
+]
+
 
 class SchoolFeeCategory(models.Model):
     _name = 'school.fee.category'
@@ -14,6 +21,32 @@ class SchoolFeeCategory(models.Model):
     code = fields.Char(string='Code')
     description = fields.Text(string='Description')
     is_active = fields.Boolean(string='Active', default=True)
+
+
+class SchoolFeeSchedule(models.Model):
+    _name = 'school.fee.schedule'
+    _description = 'Fee Schedule'
+    _order = 'academic_year_id'
+
+    name = fields.Char(string='Name', required=True)
+    academic_year_id = fields.Many2one('school.academic.year', string='Academic Year', required=True)
+    due_day = fields.Integer(string='Due Day of Month', default=15)
+    late_fee_amount = fields.Float(string='Late Fee Amount', default=50.0)
+    line_ids = fields.One2many('school.fee.schedule.line', 'schedule_id', string='Month-wise Rules')
+    is_active = fields.Boolean(string='Active', default=True)
+
+
+class SchoolFeeScheduleLine(models.Model):
+    _name = 'school.fee.schedule.line'
+    _description = 'Fee Schedule Line'
+    _order = 'month'
+
+    schedule_id = fields.Many2one('school.fee.schedule', string='Fee Schedule',
+                                   ondelete='cascade', required=True)
+    month = fields.Selection(MONTH_SELECTION, string='Month', required=True)
+    category_id = fields.Many2one('school.fee.category', string='Fee Category', required=True)
+    only_new_students = fields.Boolean(string='Only New Students', default=False,
+                                        help='If checked, this fee applies only to newly admitted students (draft state)')
 
 
 class SchoolFeeStructure(models.Model):
@@ -74,6 +107,9 @@ class SchoolFeeInvoice(models.Model):
         ('overdue', 'Overdue'),
         ('cancelled', 'Cancelled'),
     ], string='Status', default='draft', tracking=True)
+    month = fields.Selection(MONTH_SELECTION, string='Month')
+    late_fee_applied = fields.Boolean(string='Late Fee Applied', default=False)
+    schedule_id = fields.Many2one('school.fee.schedule', string='Fee Schedule')
     notes = fields.Text(string='Notes')
 
     total_amount = fields.Float(compute='_compute_amounts', string='Total Amount', store=True)
@@ -119,15 +155,21 @@ class SchoolFeeInvoice(models.Model):
             },
         }
 
-    def _apply_late_fee(self, penalty_amount):
-        """Called by cron to apply late fee penalty."""
+    def _apply_late_fee(self):
+        """Called by cron to apply flat one-time late fee."""
         today = fields.Date.today()
         overdue = self.search([
             ('state', 'in', ('pending', 'partial')),
             ('due_date', '<', today),
+            ('late_fee_applied', '=', False),
         ])
         for inv in overdue:
-            inv.write({'late_fee': inv.late_fee + penalty_amount, 'state': 'overdue'})
+            penalty = inv.schedule_id.late_fee_amount if inv.schedule_id else 50.0
+            inv.write({
+                'late_fee': inv.late_fee + penalty,
+                'late_fee_applied': True,
+                'state': 'overdue',
+            })
 
 
 class SchoolFeeInvoiceLine(models.Model):

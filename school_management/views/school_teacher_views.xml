@@ -60,6 +60,7 @@
                                     <field name="gender"/>
                                     <field name="blood_group"/>
                                     <field name="nationality"/>
+                                    <field name="marital_status"/>
                                 </group>
                             </group>
                         </page>

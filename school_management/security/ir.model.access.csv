@@ -88,3 +88,16 @@ access_school_promotion_wizard,school.student.promotion.wizard,model_school_stud
 access_school_attendance_bulk_wizard,school.attendance.bulk.wizard,model_school_attendance_bulk_wizard,school_management.group_school_teacher,1,1,1,1
 access_school_attendance_bulk_line,school.attendance.bulk.line,model_school_attendance_bulk_line,school_management.group_school_teacher,1,1,1,1
 access_school_fee_reminder_wizard,school.fee.reminder.wizard,model_school_fee_reminder_wizard,school_management.group_school_accountant,1,1,1,1
+access_school_event_admin,school.event admin,model_school_event,school_management.group_school_admin,1,1,1,1
+access_school_event_teacher,school.event teacher,model_school_event,school_management.group_school_teacher,1,1,1,0
+access_school_event_read,school.event read,model_school_event,base.group_user,1,0,0,0
+access_school_event_winner_admin,school.event.winner admin,model_school_event_winner,school_management.group_school_admin,1,1,1,1
+access_school_event_winner_teacher,school.event.winner teacher,model_school_event_winner,school_management.group_school_teacher,1,1,1,0
+access_school_event_winner_read,school.event.winner read,model_school_event_winner,base.group_user,1,0,0,0
+access_school_fee_schedule_admin,school.fee.schedule admin,model_school_fee_schedule,school_management.group_school_admin,1,1,1,1
+access_school_fee_schedule_acc,school.fee.schedule acc,model_school_fee_schedule,school_management.group_school_accountant,1,1,1,0
+access_school_fee_schedule_read,school.fee.schedule read,model_school_fee_schedule,base.group_user,1,0,0,0
+access_school_fee_schedule_line_admin,school.fee.schedule.line admin,model_school_fee_schedule_line,school_management.group_school_admin,1,1,1,1
+access_school_fee_schedule_line_acc,school.fee.schedule.line acc,model_school_fee_schedule_line,school_management.group_school_accountant,1,1,1,0
+access_school_fee_generate_wizard,school.fee.generate.wizard,model_school_fee_generate_wizard,school_management.group_school_admin,1,1,1,1
+access_school_fee_generate_wizard_acc,school.fee.generate.wizard acc,model_school_fee_generate_wizard,school_management.group_school_accountant,1,1,1,1

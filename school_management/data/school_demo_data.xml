@@ -161,6 +161,27 @@
             <field name="sequence">20</field>
         </record>
 
+        <!-- Fee Categories: Monthly, Session, Form, Exam -->
+        <record id="demo_fee_cat_monthly" model="school.fee.category">
+            <field name="name">Monthly Fee</field>
+            <field name="code">MF</field>
+        </record>
+
+        <record id="demo_fee_cat_session" model="school.fee.category">
+            <field name="name">Session Fee</field>
+            <field name="code">SF</field>
+        </record>
+
+        <record id="demo_fee_cat_form" model="school.fee.category">
+            <field name="name">Form Fee</field>
+            <field name="code">FF</field>
+        </record>
+
+        <record id="demo_fee_cat_exam" model="school.fee.category">
+            <field name="name">Exam Fee</field>
+            <field name="code">EF</field>
+        </record>
+
         <!-- Library Books -->
         <record id="demo_book_python" model="school.library.book">
             <field name="title">Python Programming for Beginners</field>
