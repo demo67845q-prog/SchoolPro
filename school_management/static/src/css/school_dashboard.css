@@ -7,12 +7,14 @@
 }
 /* Fallback for browsers that don't support :has() */
 .o_action .school-dashboard {
-    overflow-y: auto !important;
+    overflow-y: scroll !important;
+    overflow-x: auto !important;
 }
 
 .school-dashboard {
     height: calc(100vh - 46px);
-    overflow-y: auto;
+    overflow-y: scroll;
+    overflow-x: auto;
     display: grid;
     grid-template-rows: auto auto auto 1fr auto;
     gap: 10px;
@@ -283,6 +285,49 @@
 .sd-priority-dot.important { background: #f59e0b; }
 .sd-priority-dot.normal  { background: #10b981; }
 
+/* ── Custom Scrollbar ── */
+.school-dashboard::-webkit-scrollbar {
+    width: 8px;
+}
+.school-dashboard::-webkit-scrollbar-track {
+    background: #e8edf2;
+    border-radius: 8px;
+}
+.school-dashboard::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+    border-radius: 8px;
+    border: 1px solid #e8edf2;
+}
+.school-dashboard::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #64748b, #475569);
+}
+/* Firefox scrollbar */
+.school-dashboard {
+    scrollbar-width: thin;
+    scrollbar-color: #94a3b8 #e8edf2;
+}
+
+/* Table scrollbar */
+.sd-table-wrap::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.sd-table-wrap::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 6px;
+}
+.sd-table-wrap::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 6px;
+}
+.sd-table-wrap::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+.sd-table-wrap {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
 /* ── Loading overlay ── */
 .sd-loading {
     display: flex;
@@ -309,7 +354,8 @@
 /* ── Responsive (mobile) ── */
 @media (max-width: 768px) {
     .school-dashboard {
-        overflow-y: auto !important;
+        overflow-y: scroll !important;
+        overflow-x: auto !important;
         height: auto !important;
         min-height: calc(100vh - 46px);
         padding: 10px;
