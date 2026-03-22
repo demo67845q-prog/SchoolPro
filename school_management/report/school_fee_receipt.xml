@@ -11,113 +11,216 @@
         <field name="paperformat_id" ref="base.paperformat_euro"/>
     </record>
 
+    <!-- Server action: Print Fee Invoice (Paid only) — appears in Actions dropdown -->
+    <record id="action_server_print_paid_invoices" model="ir.actions.server">
+        <field name="name">Fee Invoice (Paid)</field>
+        <field name="model_id" ref="model_school_fee_invoice"/>
+        <field name="binding_model_id" ref="model_school_fee_invoice"/>
+        <field name="binding_type">action</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_print_paid_invoices()</field>
+    </record>
+
     <template id="report_fee_invoice">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="inv">
-                <t t-call="web.external_layout">
-                    <div class="page">
-                        <div class="text-center mb-3">
-                            <h2>Fee Invoice</h2>
+                <t t-set="config" t-value="env['school.config'].get_school_config()"/>
+                <div class="page" style="font-family: 'Times New Roman', Times, serif; padding: 0; margin: 0; page-break-after: always; page-break-inside: avoid;">
+
+                    <!-- ══════════════════════════════════════════
+                         OUTER BORDER
+                    ══════════════════════════════════════════ -->
+                    <div style="border: 2px solid #000; padding: 16px 20px; page-break-inside: avoid;">
+
+                        <!-- ── HEADER: Logo + School Name + Address + Regn No ── -->
+                        <div style="display: flex; align-items: flex-start; margin-bottom: 6px;">
+                            <!-- Logo -->
+                            <div style="flex-shrink: 0; margin-right: 14px;">
+                                <t t-if="config.logo">
+                                    <img t-att-src="image_data_uri(config.logo)"
+                                         style="width: 60px; height: 60px; object-fit: contain;"/>
+                                </t>
+                            </div>
+                            <!-- School Name + Address -->
+                            <div style="flex: 1; text-align: center;">
+                                <div style="font-size: 20px; font-weight: bold; letter-spacing: 1px;">
+                                    <t t-esc="config.name or 'School Name'"/>
+                                </div>
+                                <div style="font-size: 11px; margin-top: 2px;">
+                                    <t t-esc="config.address or ''"/>
+                                </div>
+                                <t t-if="config.phone">
+                                    <div style="font-size: 11px;">
+                                        Mob.: <t t-esc="config.phone"/>
+                                    </div>
+                                </t>
+                            </div>
+                            <!-- Regn No (School Code) -->
+                            <div style="flex-shrink: 0; text-align: right; font-size: 12px;">
+                                <strong>Regn. No.: </strong>
+                                <t t-esc="config.code or ''"/>
+                            </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-6">
-                                <strong>Invoice Ref:</strong>
-                                <t t-esc="inv.reference"/><br/>
-                                <strong>Date:</strong>
-                                <t t-esc="inv.date"/><br/>
-                                <strong>Due Date:</strong>
-                                <t t-esc="inv.due_date"/>
-                            </div>
-                            <div class="col-6 text-end">
-                                <strong>Student:</strong>
-                                <t t-esc="inv.student_id.name"/><br/>
-                                <strong>Admission No:</strong>
-                                <t t-esc="inv.student_id.admission_no"/><br/>
-                                <strong>Class:</strong>
-                                <t t-esc="inv.student_id.class_id.name"/> -
-                                <t t-esc="inv.student_id.section_id.name or ''"/>
-                            </div>
-                        </div>
+                        <hr style="border: 1px solid #000; margin: 6px 0;"/>
 
-                        <table class="table table-bordered mt-3">
+                        <!-- ── Student Details Table ── -->
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 10px;"
+                               cellpadding="0" cellspacing="0">
+                            <!-- Row 1: Sl. No + Date -->
+                            <tr>
+                                <td style="padding: 5px 0; width: 15%;">
+                                    <strong>Sl. No.</strong>
+                                </td>
+                                <td style="padding: 5px 0; width: 35%; border-bottom: 1px dotted #000;">
+                                    <t t-esc="inv.reference or ''"/>
+                                </td>
+                                <td style="padding: 5px 0; width: 15%; text-align: right; padding-right: 10px;">
+                                    <strong>Date</strong>
+                                </td>
+                                <td style="padding: 5px 0; width: 35%; border-bottom: 1px dotted #000;">
+                                    <t t-esc="inv.date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                </td>
+                            </tr>
+                            <!-- Row 2: Name + Admission No -->
+                            <tr>
+                                <td style="padding: 5px 0;">
+                                    <strong>Name</strong>
+                                </td>
+                                <td style="padding: 5px 0; border-bottom: 1px dotted #000;">
+                                    <t t-esc="inv.student_id.name or ''"/>
+                                </td>
+                                <td style="padding: 5px 0; text-align: right; padding-right: 10px;">
+                                    <strong>Adm. No.</strong>
+                                </td>
+                                <td style="padding: 5px 0; border-bottom: 1px dotted #000;">
+                                    <t t-esc="inv.student_id.admission_no or ''"/>
+                                </td>
+                            </tr>
+                            <!-- Row 3: Class + Section -->
+                            <tr>
+                                <td style="padding: 5px 0;">
+                                    <strong>Class</strong>
+                                </td>
+                                <td style="padding: 5px 0; border-bottom: 1px dotted #000;">
+                                    <t t-esc="inv.student_id.class_id.name or ''"/>
+                                </td>
+                                <td style="padding: 5px 0; text-align: right; padding-right: 10px;">
+                                    <strong>Sec.</strong>
+                                </td>
+                                <td style="padding: 5px 0; border-bottom: 1px dotted #000;">
+                                    <t t-esc="inv.student_id.section_id.name or ''"/>
+                                </td>
+                            </tr>
+                            <!-- Row 4: Month -->
+                            <tr>
+                                <td style="padding: 5px 0;">
+                                    <strong>Month</strong>
+                                </td>
+                                <td colspan="3" style="padding: 5px 0; border-bottom: 1px dotted #000;">
+                                    <t t-esc="dict([('1','January'),('2','February'),('3','March'),('4','April'),('5','May'),('6','June'),('7','July'),('8','August'),('9','September'),('10','October'),('11','November'),('12','December')]).get(inv.month, '')"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- ══════════════════════════════════════════
+                             FEE TABLE
+                        ══════════════════════════════════════════ -->
+                        <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px;"
+                               cellpadding="0" cellspacing="0">
+                            <!-- Table Header -->
                             <thead>
                                 <tr>
-                                    <th>Description</th>
-                                    <th class="text-end">Amount</th>
+                                    <th style="border: 1.5px solid #000; padding: 6px 10px; text-align: center; font-size: 14px; font-weight: bold;"
+                                        colspan="2">PARTICULARS</th>
+                                    <th style="border: 1.5px solid #000; padding: 6px 10px; text-align: center; font-size: 14px; font-weight: bold;">Rs.</th>
+                                    <th style="border: 1.5px solid #000; padding: 6px 10px; text-align: center; font-size: 14px; font-weight: bold; width: 50px;">P.</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- Fee Line Items -->
+                                <t t-set="line_no" t-value="0"/>
                                 <t t-foreach="inv.line_ids" t-as="line">
+                                    <t t-set="line_no" t-value="line_no + 1"/>
+                                    <t t-set="rupees" t-value="int(line.amount)"/>
+                                    <t t-set="paise" t-value="int(round((line.amount - int(line.amount)) * 100))"/>
                                     <tr>
-                                        <td><t t-esc="line.name"/></td>
-                                        <td class="text-end">
-                                            <t t-esc="'%.2f' % line.amount"/>
+                                        <td style="border-left: 1.5px solid #000; border-bottom: 1px solid #ddd; padding: 7px 10px; width: 30px; text-align: center;">
+                                            <t t-esc="line_no"/>.
+                                        </td>
+                                        <td style="border-bottom: 1px solid #ddd; padding: 7px 10px;">
+                                            <t t-esc="line.category_id.name or line.name"/>
+                                        </td>
+                                        <td style="border-left: 1.5px solid #000; border-bottom: 1px solid #ddd; padding: 7px 10px; text-align: right; font-weight: bold;">
+                                            <t t-esc="rupees"/>
+                                        </td>
+                                        <td style="border-left: 1.5px solid #000; border-right: 1.5px solid #000; border-bottom: 1px solid #ddd; padding: 7px 10px; text-align: right;">
+                                            <t t-if="paise > 0"><t t-esc="'%02d' % paise"/></t>
+                                            <t t-else="">00</t>
                                         </td>
                                     </tr>
                                 </t>
-                                <t t-if="inv.late_fee">
-                                    <tr>
-                                        <td><em>Late Fee</em></td>
-                                        <td class="text-end">
-                                            <t t-esc="'%.2f' % inv.late_fee"/>
-                                        </td>
-                                    </tr>
-                                </t>
-                            </tbody>
-                            <tfoot>
-                                <tr class="table-secondary">
-                                    <th>Total Amount</th>
-                                    <th class="text-end">
-                                        <t t-esc="'%.2f' % inv.total_amount"/>
-                                    </th>
-                                </tr>
+
+                                <!-- Late Fee Row (always shown) -->
+                                <t t-set="line_no" t-value="line_no + 1"/>
+                                <t t-set="late_rupees" t-value="int(inv.late_fee)"/>
+                                <t t-set="late_paise" t-value="int(round((inv.late_fee - int(inv.late_fee)) * 100))"/>
                                 <tr>
-                                    <td>Amount Paid</td>
-                                    <td class="text-end">
-                                        <t t-esc="'%.2f' % inv.amount_paid"/>
+                                    <td style="border-left: 1.5px solid #000; border-bottom: 1.5px solid #000; padding: 7px 10px; text-align: center;">
+                                        <t t-esc="line_no"/>.
+                                    </td>
+                                    <td style="border-bottom: 1.5px solid #000; padding: 7px 10px;">
+                                        Late Fee
+                                    </td>
+                                    <td style="border-left: 1.5px solid #000; border-bottom: 1.5px solid #000; padding: 7px 10px; text-align: right; font-weight: bold;">
+                                        <t t-if="inv.late_fee > 0"><t t-esc="late_rupees"/></t>
+                                    </td>
+                                    <td style="border-left: 1.5px solid #000; border-right: 1.5px solid #000; border-bottom: 1.5px solid #000; padding: 7px 10px; text-align: right;">
+                                        <t t-if="inv.late_fee > 0">
+                                            <t t-if="late_paise > 0"><t t-esc="'%02d' % late_paise"/></t>
+                                            <t t-else="">00</t>
+                                        </t>
                                     </td>
                                 </tr>
-                                <tr class="table-warning">
-                                    <th>Balance Due</th>
-                                    <th class="text-end">
-                                        <t t-esc="'%.2f' % inv.amount_due"/>
-                                    </th>
+
+                                <!-- TOTAL Row -->
+                                <t t-set="total_rupees" t-value="int(inv.total_amount)"/>
+                                <t t-set="total_paise" t-value="int(round((inv.total_amount - int(inv.total_amount)) * 100))"/>
+                                <tr>
+                                    <td colspan="2"
+                                        style="border-left: 1.5px solid #000; border-bottom: 1.5px solid #000; padding: 8px 10px; text-align: right; font-size: 14px; font-weight: bold;">
+                                        TOTAL
+                                    </td>
+                                    <td style="border: 1.5px solid #000; padding: 8px 10px; text-align: right; font-size: 15px; font-weight: bold;">
+                                        <t t-esc="total_rupees"/>
+                                    </td>
+                                    <td style="border: 1.5px solid #000; padding: 8px 10px; text-align: right; font-size: 15px; font-weight: bold;">
+                                        <t t-if="total_paise > 0"><t t-esc="'%02d' % total_paise"/></t>
+                                        <t t-else="">00</t>
+                                    </td>
                                 </tr>
-                            </tfoot>
+                            </tbody>
                         </table>
 
-                        <t t-if="inv.payment_ids">
-                            <h5>Payment History</h5>
-                            <table class="table table-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Receipt No</th>
-                                        <th>Date</th>
-                                        <th>Mode</th>
-                                        <th class="text-end">Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="inv.payment_ids" t-as="pay">
-                                        <tr>
-                                            <td><t t-esc="pay.receipt_no"/></td>
-                                            <td><t t-esc="pay.date"/></td>
-                                            <td><t t-esc="pay.payment_mode"/></td>
-                                            <td class="text-end">
-                                                <t t-esc="'%.2f' % pay.amount"/>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-                        </t>
-
-                        <div class="mt-4 text-center text-muted">
-                            <em>This is a computer-generated document. No signature required.</em>
+                        <!-- ── Rupees in Words ── -->
+                        <div style="border: 1.5px solid #000; border-top: 0; padding: 8px 10px; font-size: 13px;">
+                            <strong>Rupees (in words):</strong>
+                            <span style="margin-left: 6px; border-bottom: 1px dotted #000; padding: 0 10px;">
+                                <t t-esc="env.company.currency_id.amount_to_text(inv.total_amount)"/>
+                            </span>
                         </div>
+
+                        <!-- ── Footer: Receiver's Signature ── -->
+                        <div style="text-align: right; margin-top: 60px; padding-right: 10px; font-size: 13px;">
+                            <div style="display: inline-block; text-align: center;">
+                                <div style="border-top: 1px solid #000; padding-top: 4px; min-width: 180px;">
+                                    <strong>Receiver's Signature</strong>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                </t>
+                </div>
             </t>
         </t>
     </template>

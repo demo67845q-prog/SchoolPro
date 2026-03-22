@@ -115,7 +115,31 @@ class SchoolFeeInvoice(models.Model):
     total_amount = fields.Float(compute='_compute_amounts', string='Total Amount', store=True)
     amount_paid = fields.Float(compute='_compute_amounts', string='Amount Paid', store=True)
     amount_due = fields.Float(compute='_compute_amounts', string='Amount Due', store=True)
-    late_fee = fields.Float(string='Late Fee', default=0.0)
+    late_fee = fields.Float(
+        string='Late Fee', compute='_compute_late_fee', store=True, readonly=False,
+    )
+
+    @api.depends('date', 'due_date')
+    def _compute_late_fee(self):
+        for rec in self:
+            if not rec.date or not rec.due_date:
+                rec.late_fee = 0.0
+                continue
+            inv_month = rec.date.month
+            inv_year = rec.date.year
+            due_month = rec.due_date.month
+            due_year = rec.due_date.year
+            # Number of months the due_date is beyond the invoice month
+            month_diff = (due_year - inv_year) * 12 + (due_month - inv_month)
+            if month_diff <= 0:
+                # Due date is in the same month or before the invoice month
+                if due_month == inv_month and due_year == inv_year and rec.due_date.day > 15:
+                    rec.late_fee = 50.0
+                else:
+                    rec.late_fee = 0.0
+            else:
+                # Due date has crossed into the next month(s)
+                rec.late_fee = month_diff * 100.0
 
     @api.depends('line_ids.amount', 'payment_ids.amount', 'late_fee')
     def _compute_amounts(self):
@@ -141,6 +165,12 @@ class SchoolFeeInvoice(models.Model):
 
     def action_reset_draft(self):
         self.write({'state': 'draft'})
+
+    def action_print_paid_invoices(self):
+        paid = self.filtered(lambda inv: inv.state == 'paid')
+        if not paid:
+            raise UserError(_('No invoices in "Paid" status among the selected records.'))
+        return self.env.ref('school_management.action_report_school_fee_invoice').report_action(paid)
 
     def action_register_payment(self):
         return {
