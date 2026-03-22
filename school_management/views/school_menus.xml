@@ -169,28 +169,28 @@
         sequence="70"/>
 
     <!-- ── Library ────────────────────────────────────────────────────────── -->
-    <menuitem id="menu_school_library"
-        name="Library"
-        parent="menu_school_root"
-        sequence="70"/>
+<!--    <menuitem id="menu_school_library"-->
+<!--        name="Library"-->
+<!--        parent="menu_school_root"-->
+<!--        sequence="70"/>-->
 
-    <menuitem id="menu_school_library_books"
-        name="Books"
-        parent="menu_school_library"
-        action="action_school_library_book"
-        sequence="10"/>
+<!--    <menuitem id="menu_school_library_books"-->
+<!--        name="Books"-->
+<!--        parent="menu_school_library"-->
+<!--        action="action_school_library_book"-->
+<!--        sequence="10"/>-->
 
-    <menuitem id="menu_school_library_issues"
-        name="Issues"
-        parent="menu_school_library"
-        action="action_school_library_issue"
-        sequence="20"/>
+<!--    <menuitem id="menu_school_library_issues"-->
+<!--        name="Issues"-->
+<!--        parent="menu_school_library"-->
+<!--        action="action_school_library_issue"-->
+<!--        sequence="20"/>-->
 
-    <menuitem id="menu_school_library_overdue"
-        name="Overdue"
-        parent="menu_school_library"
-        action="action_school_library_overdue"
-        sequence="30"/>
+<!--    <menuitem id="menu_school_library_overdue"-->
+<!--        name="Overdue"-->
+<!--        parent="menu_school_library"-->
+<!--        action="action_school_library_overdue"-->
+<!--        sequence="30"/>-->
 
     <!-- Transport and Hostel menus removed -->
 
