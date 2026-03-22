@@ -6,8 +6,9 @@
             <!-- ── Header ── -->
             <div class="sd-header">
                 <h2>
-                    <i class="fa fa-graduation-cap me-2"/>
-                    School Dashboard
+                    <img src="/school_management/static/description/logo_nps2.png"
+                         style="height: 46px; width: auto; margin-right: 8px; vertical-align: middle;"/>
+                    NPS School Dashboard
                 </h2>
                 <div class="sd-header-right">
                     <span class="sd-updated">
