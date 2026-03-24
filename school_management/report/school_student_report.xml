@@ -46,7 +46,7 @@
                                     <tr>
                                         <td><strong>Academic Year:</strong></td>
                                         <td><t t-esc="student.academic_year_id.name"/></td>
-                                        <td><strong>Roll No:</strong></td>
+                                        <td><strong>Aadhar No:</strong></td>
                                         <td><t t-esc="student.roll_number or '-'"/></td>
                                     </tr>
                                     <tr>

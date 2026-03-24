@@ -89,7 +89,7 @@ class SchoolAttendanceBulkLine(models.TransientModel):
 
     wizard_id = fields.Many2one('school.attendance.bulk.wizard', ondelete='cascade')
     student_id = fields.Many2one('school.student', string='Student', readonly=True)
-    roll_number = fields.Char(string='Roll No', readonly=True)
+    roll_number = fields.Char(string='Aadhar No', readonly=True)
     status = fields.Selection([
         ('present', 'Present'),
         ('absent', 'Absent'),

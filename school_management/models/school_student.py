@@ -1,6 +1,7 @@
 import logging
+import re
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -37,8 +38,15 @@ class SchoolStudent(models.Model):
     class_id = fields.Many2one('school.class', string='Class', required=True, tracking=True)
     section_id = fields.Many2one('school.section', string='Section',
                                  domain="[('class_id', '=', class_id)]", tracking=True)
-    roll_number = fields.Char(string='Roll Number')
+    roll_number = fields.Char(string='Aadhar Number')
     admission_date = fields.Date(string='Admission Date', default=fields.Date.today)
+
+    @api.constrains('roll_number')
+    def _check_roll_number(self):
+        for rec in self:
+            if rec.roll_number:
+                if not re.fullmatch(r'\d{12}', rec.roll_number):
+                    raise ValidationError(_('Aadhar Number must be exactly 12 digits.'))
 
     # ── State ────────────────────────────────────────────────────────
     state = fields.Selection([
